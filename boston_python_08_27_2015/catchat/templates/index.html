@@ -6,4 +6,8 @@
   <h2>Current user count: {{ user_count }}</h2>
   <h2>Banner:</h2>
   <p>{{ banner }}</p>
+  <form action="/set_banner/" method="POST">
+    <input name='banner'/>
+    <button type='submit'>submit</button>
+  </form>
 </div>

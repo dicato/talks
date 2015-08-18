@@ -29,6 +29,14 @@ def get_banner():
     return result['banner']
 
 
+def set_banner(banner):
+    url = API_URL + '/banner/'
+    data = json.dumps({'banner': banner})
+    try:
+        r = requests.post(url, data=data)
+    except Exception as e:  # Gotta catch 'em all!
+        return None
+
 @app.route("/")
 def splash():
     user_count = get_user_count()
@@ -36,9 +44,10 @@ def splash():
     return render_template('index.html', user_count=user_count, banner=banner)
 
 
-@app.route('/set_banner', methods=['POST'])
-def set_banner():
+@app.route('/set_banner/', methods=['POST'])
+def banner():
     banner = request.values.get('banner', "")
+    set_banner(banner)
     return redirect(url_for('splash'))
 
 
