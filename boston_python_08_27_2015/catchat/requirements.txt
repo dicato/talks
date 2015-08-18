@@ -1,3 +1,4 @@
 twisted
 httpie
 flask
+requests
