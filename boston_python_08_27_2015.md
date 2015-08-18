@@ -60,11 +60,60 @@ This is a comment and should not render!
 
 ---
 
-## 5. protocols o_O
+## 5. protocols
+
+---
+
+# [fit] expectations
+
+---
+
+## use twisted
+## to build modern
+# [fit] services
 
 ---
 
 ## twisted
 # [fit] what is it?
+
+---
+
+## async programming
+# [fit] what is it?
+
+---
+
+## when to use it
+
+---
+
+## reactor
+
+---
+
+## deferreds
+
+---
+
+## protocols
+
+
+---
+
+## trial
+# [fit] testing, the twisted way
+
+---
+
+## twisted & django
+
+---
+
+## controlling a twisted service via a django application
+
+---
+
+## pesisting data out of a twisted service
 
 ---
