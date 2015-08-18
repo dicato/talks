@@ -20,7 +20,7 @@ http://patrick.cloke.us/
 Stephen DiCato
 
 What we want them to learn
-==============
+==========================
 
 * Core concepts of Twisted:
     * Event loop / reactor
@@ -31,22 +31,21 @@ What we want them to learn
 
 * Simplify examples down from huge 10-part things down to '60 seconds' (small & consumable)
 
+What is Twisted?
+================
 
-.. rst-class:: build
+What is Twisted?
+    An *asynchronous*, *evented* networking framework for Python
 
-* Twisted Overview
-* Twisted Example
-* Deferreds
-* Trial / Testing
+.. note::
 
+    Asynchronous: non-blocking against I/O bound tasks (e.g. reading/writing to
+    a socket). [#]_
 
-Twisted
-=======
+    Evented: user code is notified by the event loop when something it cares
+    about happens (e.g. new data is available on a socket). Freqeuntly layered
+    in Twisted: e.g. new data to new line to new HTTP request.
 
-.. rst-class:: build
-
-    What is Twisted?
-        An *asynchronous*, *evented* networking framework for Python
     Why use Twisted?
         * Don't worry about low-level networking
         * Easily handle many connections without blocking
@@ -57,17 +56,11 @@ Twisted
         Twisted is probably not the easiest library if you just want to make an HTTP
         request. (I'd suggest using `requests <http://python-requests.org/>`_.)
 
-    More information at https://twistedmatrix.com/
+Diving In
+=========
 
-    To just install it: ``pip install twisted``
 
-.. note::
-    Asynchronous: non-blocking against I/O bound tasks (e.g. reading/writing to
-    a socket). [#]_
 
-    Evented: user code is notified by the event loop when something it cares
-    about happens (e.g. new data is available on a socket). Freqeuntly layered
-    in Twisted: e.g. new data to new line to new HTTP request.
 
 
 Twisted Concepts
