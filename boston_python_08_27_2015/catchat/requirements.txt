@@ -2,3 +2,7 @@ twisted
 httpie
 flask
 requests
+
+# For Twisted web client.
+pyOpenSSL
+service_identity

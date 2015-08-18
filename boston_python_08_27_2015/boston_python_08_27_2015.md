@@ -62,12 +62,30 @@ This is a comment and should not render!
 ---
 
 # [fit] expectations
+## [fit] *integrate* twisted
 
 ---
 
 ## use twisted
 ## to build modern
 # [fit] services
+
+---
+
+## **chat server** example (with admin dashboard)
+
+- Clients use netcat
+- Messages are broadcast to all users
+- Clients are sent a banner on login
+- Banner is configurable via an admin webpage
+
+---
+
+(this slide intentionally left blank)
+
+---
+
+## 1. what is async
 
 ---
 
@@ -87,7 +105,11 @@ in Twisted: e.g. new data to new line to new HTTP request.
 
 ---
 
-## when to use it
+## 2. when to async
+
+---
+
+## when to use it (todo)
 
 <!--
 
@@ -106,10 +128,36 @@ When shouldn't I use Twisted?
 
 ---
 
+## 3. event loop (reactor)
+
+---
+
+## reactor (todo)
+
+---
+
+## 4. deferreds
+
+---
+
+## [fit] a **deferred** is a *promise*
+## [fit] that a function will eventually have a **result**
+
+<!--
+
+Deferreds are similar to "Promises" or "Futures". They are used to process the
+results of an asynchronous function: the function returns (a Deferred)
+immediately, callbacks are attached that will received the result of the
+previous callback.
+
+-->
+
+---
+
 ![right 100%](http://twistedmatrix.com/documents/current/_images/deferred-process.png)
 
-# [fit] deferred results through
-## [fit] a chain of *callbacks* and **errbacks**
+# [fit] deferreds
+## [fit] manage a *callback chain*
 
 <!--
 
@@ -123,30 +171,48 @@ The chain of callbacks is processed using the following rules:
 4.  If an errback doesn’t raise an exception or return a
     `twisted.python.failure.Failure` instance, switch to callback.
 
+See http://twistedmatrix.com/documents/current/core/howto/defer.html
+
 -->
 
 ---
 
-## reactor
+example
+
+![right 100%](deferred_ex.png)
+
+```python
+import json
+
+from twisted.internet import reactor
+from twisted.web import client
+
+# The Deferred.
+d = client.getPage('https://api.github.com/users/clokep/orgs')
+
+def cbResponse(data):
+    # Parse the JSON payload. TODO Error checking.
+    orgs = json.loads(data)
+    # Find the names of the organizations and print them in
+    # alphabetical order.
+    org_names = sorted([org['login'] for org in orgs])
+    print('\n'.join(org_names))
+d.addCallback(cbResponse)  # The callback for a successful request.
+
+def cbShutdown(ignored):
+    reactor.stop()  # No matter what happens, shutdown the eventloop.
+d.addBoth(cbShutdown)  # The callback/errback.
+
+reactor.run()  # Start the eventloop.
+```
 
 ---
 
-# [fit] deferreds
-## [fit] manage a *callback chain*
-
-<!--
-
-Deferreds are similar to "Promises" or "Futures". They are used to process the
-results of an asynchronous function: the function returns (a Deferred)
-immediately, callbacks are attached that will received the result of the
-previous callback.
-
--->
+## 5. protocols
 
 ---
 
 ## protocols
-
 
 ---
 
@@ -155,14 +221,10 @@ previous callback.
 
 ---
 
-## twisted & django
+## integrate twisted with other services
 
 ---
 
-## controlling a twisted service via a django application
-
----
-
-## pesisting data out of a twisted service
+## persisting data out of a twisted service
 
 ---
