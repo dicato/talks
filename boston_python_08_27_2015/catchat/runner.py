@@ -8,7 +8,7 @@ from api import Root
 factory = NetCatChatFactory()
 site = server.Site(Root(factory))
 
-# Listen on TCP port 1400 for chat and port 80 for the API.
+# Listen on TCP port 1400 for chat and port 8080 for the API.
 endpoints.serverFromString(reactor, "tcp:1400").listen(factory)
 endpoints.serverFromString(reactor, "tcp:8080").listen(site)
 
