@@ -57,7 +57,7 @@ This is a comment and should not render!
 
 ---
 
-## 5. protocols
+## 5. protocols (and more)
 
 ---
 
@@ -132,7 +132,45 @@ When shouldn't I use Twisted?
 
 ---
 
-## reactor (todo)
+## [fit] event loop APIs:
+### networking, threading, event dispatching, timing, etc.
+
+<!--
+
+The reactor is the Twisted event loop. The reactor provides APIs for networking,
+threading, dispatching events, and more.
+
+-->
+
+---
+
+# reactor implementation depends on
+# [fit] *platform* and *other factors*
+## reactor is a **global singleton**
+
+```python
+from twisted.internet import reactor
+
+def add(a, b):
+    """Add to variables and return them..."""
+    return a + b
+
+delay = 1.0  # seconds
+reactor.callLater(delay, add, 8, 3)
+```
+
+<!--
+
+Twisted has event loops that hook into UI event loops (e.g. GTK, wxPython,
+win32). Generally, don't change the reactor if you don't need to.
+
+Some functions/methods/classes take in a reactor, this is used for testing and
+is not usually provided by client code.
+
+Global singleton: there is only one, ever, it can be accessed everywhere by
+importing twisted.internet.reactor.
+
+-->
 
 ---
 
@@ -208,11 +246,65 @@ reactor.run()  # Start the eventloop.
 
 ---
 
-## 5. protocols
+## 5. protocols (and more)
 
 ---
 
-## protocols
+# `Protocols`
+## event handlers for a *connection*
+
+* Each new connection gets a new `Protocol` **instance**
+* Basic events include:
+connection opened/closed, data available
+* Transforms wire protocol into higher level events
+(e.g. **Line** received or **HTTP request** finished)
+
+<!--
+
+Twisted includes protocol implementations for low-level (e.g. line received) and
+high-level protocols (e.g. HTTP, IRC, IMAP). Can easily add custom protocols.
+
+Generally refers to TCP, but similar for UDP: a Protocol is an event handler for
+UDP datagrams.
+
+-->
+
+---
+
+# [fit] `ProtocolFactory`
+### builds `Protocol` instances
+### keeps **state** across `Protocols`
+
+<!--
+
+Twisted provides interfaces (via zope.interfaces) for each of the above objects,
+they describe the full API available on each.
+
+Might hold expensive calculations that only need to be done once or
+configuration information (e.g. SSH keys, login information), or any shared
+state across multiple protocols (e.g. channels on an IRC server).
+
+-->
+
+---
+
+# `Transport`
+
+## a way to **send data**
+
+* Write **bytes** to a connection/datagram
+* Close a connection
+* Query local/remote addresses
+* Do not assume *when* data will be sent
+* Usually use built-in instances
+
+<!--
+
+Remember that everything in Twisted is bytes not Unicode!
+
+An address varies based on the type of connection: IPv4, IPv6, UNIX, etc.
+
+-->
 
 ---
 
