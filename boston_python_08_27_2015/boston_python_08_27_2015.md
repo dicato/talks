@@ -105,11 +105,17 @@ in Twisted: e.g. new data to new line to new HTTP request.
 
 ---
 
+TODO Example of events: netcatchat protocol snippet
+
+---
+
 ## 2. when to async
 
 ---
 
-## when to use it (todo)
+## does not magically make code **non-blocking**
+
+TODO
 
 <!--
 
@@ -144,9 +150,11 @@ threading, dispatching events, and more.
 
 ---
 
-# reactor implementation depends on
-# [fit] *platform* and *other factors*
-## reactor is a **global singleton**
+# [fit] reactor depends on
+## [fit] *platform* and *other factors*
+### reactor is a **global singleton**
+
+---
 
 ```python
 from twisted.internet import reactor
@@ -157,6 +165,7 @@ def add(a, b):
 
 delay = 1.0  # seconds
 reactor.callLater(delay, add, 8, 3)
+# This assumes the reactor is running!
 ```
 
 <!--
@@ -215,9 +224,9 @@ See http://twistedmatrix.com/documents/current/core/howto/defer.html
 
 ---
 
-example
+![100%](images/deferred_ex.png)
 
-![right 100%](images/deferred_ex.png)
+---
 
 ```python
 import json
@@ -229,10 +238,8 @@ from twisted.web import client
 d = client.getPage('https://api.github.com/users/clokep/orgs')
 
 def cbResponse(data):
-    # Parse the JSON payload. TODO Error checking.
-    orgs = json.loads(data)
-    # Find the names of the organizations and print them in
-    # alphabetical order.
+    orgs = json.loads(data)  # Parse the JSON paload.
+    # Find the names of the organizations in alphabetical order.
     org_names = sorted([org['login'] for org in orgs])
     print('\n'.join(org_names))
 d.addCallback(cbResponse)  # The callback for a successful request.
@@ -271,6 +278,27 @@ UDP datagrams.
 
 ---
 
+```python
+from twisted.internet import protocol
+
+class SimpleProtocol(protocol.Protocol):
+    def connectionMade(self):
+        # ... called after this protocol is instantiated
+        # and the connection is ready ...
+
+    def connectionLost(self, reason):
+        # The connection is about to be terminated.
+
+    def dataReceived(self, data):
+        # New data (bytes) are available for consuming.
+        # Data is new each time and unbuffered.
+
+    # Has a transport property for interacting with
+    # the connection. (More on this later!)
+```
+
+---
+
 # [fit] `ProtocolFactory`
 ### builds `Protocol` instances
 ### keeps **state** across `Protocols`
@@ -285,6 +313,20 @@ configuration information (e.g. SSH keys, login information), or any shared
 state across multiple protocols (e.g. channels on an IRC server).
 
 -->
+
+---
+
+```python
+from twisted.internet import protocol
+from .above import SimpleProtocol
+
+class SimpleProtocolFactory(protocol.ServerFactory):
+    protocol = SimpleProtocol
+
+    # Really this must have a method,  buildProtocol,
+    # which  must return a IProtocol instance, but
+    # ServerFactory has a reasonable implementation.
+```
 
 ---
 
@@ -305,6 +347,16 @@ Remember that everything in Twisted is bytes not Unicode!
 An address varies based on the type of connection: IPv4, IPv6, UNIX, etc.
 
 -->
+
+---
+
+```python
+class SimpleProtocol(protocol.Protocol):
+    def dataReceived(self, data):
+        response = self.parse(data)  # for example
+        # Send the results on the wire.
+        self.transport.write(response.to_bytes())
+```
 
 ---
 
