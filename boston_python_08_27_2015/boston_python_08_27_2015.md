@@ -317,6 +317,38 @@ An address varies based on the type of connection: IPv4, IPv6, UNIX, etc.
 
 ---
 
+![fill](images/diagrams.002.png)
+
+---
+
+![fill](images/diagrams.003.png)
+
+---
+
+![fill](images/diagrams.004.png)
+
+---
+
+![fill](images/diagrams.005.png)
+
+---
+
+![fill](images/diagrams.006.png)
+
+---
+
 ## persisting data out of a twisted service
+
+---
+
+![fill 90%](images/diagrams.007.png)
+
+---
+
+![fill 90%](images/diagrams.008.png)
+
+---
+
+![fill 80%](images/diagrams.009.png)
 
 ---
