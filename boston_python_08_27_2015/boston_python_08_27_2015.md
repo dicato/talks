@@ -349,6 +349,19 @@ An address varies based on the type of connection: IPv4, IPv6, UNIX, etc.
 
 ---
 
+1. `twisted.enterprise.adbapi`
+2. SQL Alchemy
+3. Django ORM
+...
+
+### careful not to block!
+
+---
+
+## Is there a better, more reusable way?
+
+---
+
 ![fill 80%](images/diagrams.009.png)
 
 ---
