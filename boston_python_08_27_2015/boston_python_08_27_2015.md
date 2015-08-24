@@ -201,6 +201,18 @@ previous callback.
 
 ---
 
+### in other words...
+### deferreds are a *placeholder* for a future *result*
+
+<!--
+
+Would it be worth it to discuss deferreds in the context or something like
+celery async results?
+
+-->
+
+---
+
 ![right 100%](http://twistedmatrix.com/documents/current/_images/deferred-process.png)
 
 # [fit] deferreds
@@ -389,8 +401,7 @@ class SimpleProtocol(protocol.Protocol):
 
 ---
 
-## persisting data out of a twisted service
-
+## What about data *persistence?*
 ---
 
 ![fill 90%](images/diagrams.007.png)
@@ -417,3 +428,5 @@ class SimpleProtocol(protocol.Protocol):
 ![fill 80%](images/diagrams.009.png)
 
 ---
+
+### How would you *scale* the twisted server?
