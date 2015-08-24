@@ -217,7 +217,7 @@ See http://twistedmatrix.com/documents/current/core/howto/defer.html
 
 example
 
-![right 100%](deferred_ex.png)
+![right 100%](images/deferred_ex.png)
 
 ```python
 import json
