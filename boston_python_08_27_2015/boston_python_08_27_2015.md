@@ -46,7 +46,7 @@ This is a comment and should not render!
 
 ---
 
-## 2. when to use twisted
+## 2. when/why to use twisted
 
 ---
 ## 3. event loop (reactor)
@@ -145,13 +145,22 @@ class NetCatChatProtocol(protocol.Protocol):
 
 ---
 
-## 2. when to use twisted
+## 2. when/why to use twisted
 
 ---
 
-## [fit] **I/O bound** tasks
-## [fit] provides high-level *networking* APIs
-## [fit] protocol parsing, handling many non-blocking connections, etc.
+## [fit] high-level *networking* APIs
+## [fit] pre-built protocol parsing
+### handling many **I/O bound** tasks
+### *event-driven* programming
+
+<!--
+
+Built in parsers for many protocols (IMAP, SMTP, IRC, SSH, HTTP, etc.)
+
+Instead of polling a socket, you're told when data is available, etc.
+
+-->
 
 ---
 
