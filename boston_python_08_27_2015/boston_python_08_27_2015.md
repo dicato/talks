@@ -149,22 +149,22 @@ class NetCatChatProtocol(protocol.Protocol):
 
 ---
 
-## does not magically make code **non-blocking**
+## [fit] **I/O bound** tasks
+## [fit] provides high-level *networking* APIs
+## [fit] protocol parsing, handling many non-blocking connections, etc.
 
-TODO
+---
+
+# [fit] twisted will *not*...
+
+* ...magically make code **non-blocking**
+* ...help with CPU-bound tasks<sup>†</sup>
+* ...be the simplest library to make a simple HTTP request<sup>‡</sup>
 
 <!--
 
-Why use Twisted?
-    * Don't worry about low-level networking
-    * Easily handle many connections without blocking
-    * Built in parsing of many network protocols.
-
-When shouldn't I use Twisted?
-    Twisted will not help you with CPU-bound tasks, e.g. long blocking tasks.
-
-    Twisted is probably not the easiest library if you just want to make an HTTP
-    request. (I'd suggest using `requests <http://python-requests.org/>`_.)
+† Unless you want to coiterate, and also have networking tasks, etc.
+‡ Although there is treq: requests built on Twisted
 
 -->
 
@@ -190,6 +190,19 @@ threading, dispatching events, and more.
 ## [fit] *platform* and *other factors*
 ### reactor is a **global singleton**
 
+<!--
+
+Twisted has event loops that hook into UI event loops (e.g. GTK, wxPython,
+win32). Generally, don't change the reactor if you don't need to.
+
+Some functions/methods/classes take in a reactor, this is used for testing and
+is not usually provided by client code.
+
+Global singleton: there is only one, ever, it can be accessed everywhere by
+importing twisted.internet.reactor.
+
+-->
+
 ---
 
 ## example (from `runner.py`)
@@ -214,15 +227,6 @@ reactor.run()
 ```
 
 <!--
-
-Twisted has event loops that hook into UI event loops (e.g. GTK, wxPython,
-win32). Generally, don't change the reactor if you don't need to.
-
-Some functions/methods/classes take in a reactor, this is used for testing and
-is not usually provided by client code.
-
-Global singleton: there is only one, ever, it can be accessed everywhere by
-importing twisted.internet.reactor.
 
 Note that there are a variety of ways to tell a reactor to listen on a port
 using a specific protocol.
@@ -490,11 +494,6 @@ class NetCatChatFactory(protocol.Factory):
 
 ---
 
-## trial
-# [fit] testing, the twisted way
-
----
-
 ## integrate twisted with other services
 
 ---
@@ -548,3 +547,17 @@ class NetCatChatFactory(protocol.Factory):
 ---
 
 ### How would you *scale* the twisted server?
+
+---
+
+# [fit] Topics we wish we had time for
+
+* trial: testing, the twisted way
+* inline callbacks: synchronous-looking deferreds in twisted
+
+<!--
+
+Some topics we didn't really have time for, but this is at least some keywords
+to look up!
+
+-->
