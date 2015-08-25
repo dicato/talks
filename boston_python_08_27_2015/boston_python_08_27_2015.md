@@ -213,10 +213,13 @@ celery async results?
 
 ---
 
-![right 100%](http://twistedmatrix.com/documents/current/_images/deferred-process.png)
+# [fit] deferreds manage a
+## [fit] *callback chain*
 
-# [fit] deferreds
-## [fit] manage a *callback chain*
+<!--
+Modified version of http://twistedmatrix.com/documents/current/_images/deferred-process.png
+-->
+![right 100%](images/deferreds.png)
 
 <!--
 
@@ -236,9 +239,7 @@ See http://twistedmatrix.com/documents/current/core/howto/defer.html
 
 ---
 
-![100%](images/deferred_ex.png)
-
----
+## Example (from `deferred_ex.py`)
 
 ```python
 import json
@@ -262,6 +263,33 @@ d.addBoth(cbShutdown)  # The callback/errback.
 
 reactor.run()  # Start the eventloop.
 ```
+
+---
+
+## Example Deferred flow (from `deferred_ex.py`)
+
+![inline](images/deferred_ex.png)
+
+---
+
+# deferreds fine print
+
+![right 80%](images/deferreds_chains.png)
+
+```python
+d = defer.Deferred()
+d.addCallback(callback_1)
+d.addErrback(errback_1)
+d.addCallbacks(callback_2, errback_2)
+d.addBoth(cleanup)
+```
+
+<!--
+
+Callbacks and errbacks *always* stack with passthrus, adding a callback and an
+errback separately don't end up "next" to each other in the callback chain.
+
+-->
 
 ---
 
@@ -290,23 +318,34 @@ UDP datagrams.
 
 ---
 
+## Example (from `chat.py`)
+
 ```python
 from twisted.internet import protocol
 
-class SimpleProtocol(protocol.Protocol):
-    def connectionMade(self):
-        # ... called after this protocol is instantiated
-        # and the connection is ready ...
 
-    def connectionLost(self, reason):
-        # The connection is about to be terminated.
+class NetCatChatProtocol(protocol.Protocol):
+    # An instance of a Protocol exists for each established connection.
+
+    def connectionMade(self):
+        # Called when the protocol is instantiated and the connection is ready.
+        """ ... snipped ... """
 
     def dataReceived(self, data):
         # New data (bytes) are available for consuming.
-        # Data is new each time and unbuffered.
+        """ ... snipped ... """
 
-    # Has a transport property for interacting with
-    # the connection. (More on this later!)
+    def connectionLost(self, reason):
+        # The connection is about to be terminated.
+        """ ... snipped ... """
+
+    # Has a transport property for interacting with the connection.
+
+    # Has a factory property for interacting with the factory that build this.
+
+
+class NetCatChatFactory(protocol.Factory):
+    """ ... snipped ... See below."""
 ```
 
 ---
@@ -328,16 +367,22 @@ state across multiple protocols (e.g. channels on an IRC server).
 
 ---
 
+## Example (from `chat.py`)
+
 ```python
 from twisted.internet import protocol
-from .above import SimpleProtocol
 
-class SimpleProtocolFactory(protocol.ServerFactory):
-    protocol = SimpleProtocol
 
-    # Really this must have a method,  buildProtocol,
-    # which  must return a IProtocol instance, but
-    # ServerFactory has a reasonable implementation.
+class NetCatChatProtocol(protocol.Protocol):
+    """ ... snipped ... See above."""
+
+
+class NetCatChatFactory(protocol.Factory):
+    # By defining `protocol`, the default implementation of
+    # `Factory.buildProtocol` will work fine!
+    protocol = NetCatChatProtocol
+
+    """ ... snipped ... """
 ```
 
 ---
@@ -362,12 +407,34 @@ An address varies based on the type of connection: IPv4, IPv6, UNIX, etc.
 
 ---
 
+## Example (from `chat.py`)
+
 ```python
-class SimpleProtocol(protocol.Protocol):
+from twisted.internet import protocol
+
+
+class NetCatChatProtocol(protocol.Protocol):
+    # An instance of a Protocol exists for each established connection.
+
+    def connectionMade(self):
+        # Called when the protocol is instantiated and the connection is ready.
+
+        """ ... snipped ..."""
+
+        # The connection has been established, perform greetings here.
+        self.transport.write(self.factory.banner)
+
     def dataReceived(self, data):
-        response = self.parse(data)  # for example
-        # Send the results on the wire.
-        self.transport.write(response.to_bytes())
+        """ ... snipped ..."""
+
+    def connectionLost(self, reason):
+        """ ... snipped ..."""
+
+    """ ... snipped ..."""
+
+
+class NetCatChatFactory(protocol.Factory):
+    """ ... snipped ... See above."""
 ```
 
 ---

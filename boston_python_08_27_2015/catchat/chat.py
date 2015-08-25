@@ -5,6 +5,8 @@ class NetCatChatProtocol(protocol.Protocol):
     # An instance of a Protocol exists for each established connection.
 
     def connectionMade(self):
+        # Called when the protocol is instantiated and the connection is ready.
+
         # Register to receive messages.
         self.factory.clients.add(self)
 
@@ -12,15 +14,23 @@ class NetCatChatProtocol(protocol.Protocol):
         self.transport.write(self.factory.banner)
 
     def dataReceived(self, data):
+        # New data (bytes) are available for consuming.
+
         # Notify the other users of this message.
         self.factory.broadcast_message(self, data)
 
     def connectionLost(self, reason):
+        # The connection is about to be terminated.
+
         # No longer should receive messages.
         self.factory.clients.remove(self)
 
         # The connection is complete, clean up here.
         self.transport.write(b'Goodbye')
+
+    # Has a transport property for interacting with the connection.
+
+    # Has a factory property for interacting with the factory that build this.
 
 
 class NetCatChatFactory(protocol.Factory):
@@ -32,7 +42,7 @@ class NetCatChatFactory(protocol.Factory):
         # All the connected chatters.
         self.clients = set()
         # A message to send to each client on connection.
-        self.banner = b'Welcome to NetChatCat!\t\n'
+        self.banner = b'Welcome to NetCatChat!\t\n'
 
     def broadcast_message(self, sender, msg):
         """Send a message to all connected clients."""
