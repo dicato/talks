@@ -506,6 +506,12 @@ class NetCatChatFactory(protocol.Factory):
 
 ---
 
+## admin console
+1. current user count
+2. set banner/MOTD
+
+---
+
 ![fill](images/diagrams.004.png)
 
 ---
@@ -517,8 +523,79 @@ class NetCatChatFactory(protocol.Factory):
 ![fill](images/diagrams.006.png)
 
 ---
+<!--
+Show code here.
+-->
+
+```python
+import json
+
+from twisted.internet import reactor, task
+from twisted.python import log
+from twisted.web import resource, server
+
+
+class ApiResource(resource.Resource):
+    # Note that this is available as self.server for every resource.
+
+    def __init__(self, chat_factory, *args, **kwargs):
+        # This needs a reference to the NetCatChat factory object.
+        self.chat_factory = chat_factory
+
+        resource.Resource.__init__(self, *args, **kwargs)
+```
+
+---
+
+```python
+class Users(ApiResource):
+    isLeaf = True
+
+    def render_GET(self, request):
+        # The user count from server.
+        user_count = len(self.chat_factory.clients)
+        result = {'users': user_count}
+
+        return json.dumps(result, indent=4, separators=(',', ': ')) + "\n"
+```
+
+---
+
+```python
+class Banner(ApiResource):
+    isLeaf = True
+
+    def _set_banner(self, banner):
+        # ... error handling ;-)
+        self.chat_factory.banner = bytes(banner)  # unicode to bytes
+
+    def render_GET(self, request):
+        # Get the banner.
+        result = {'banner': self.chat_factory.banner}
+        return json.dumps(result, indent=4, separators=(',', ': ')) + "\n"
+
+    def render_POST(self, request):
+        # Set the banner.
+        status = "ERROR"
+        try:
+            content = request.content.read()
+            data = json.loads(content)['banner']
+
+            # Make this a Deferred so the function can immediately return.
+            d = task.deferLater(reactor, 0.1, self._set_banner, data)
+            d.addErrback(log.err)
+
+            status = "SUCCESS"
+        except Exception:
+          # ... error handling ;-)
+
+        return json.dumps({'status': status})
+```
+
+---
 
 ## What about data *persistence?*
+
 ---
 
 ![fill 90%](images/diagrams.007.png)
