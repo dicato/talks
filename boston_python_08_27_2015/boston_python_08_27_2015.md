@@ -66,8 +66,7 @@ This is a comment and should not render!
 
 ---
 
-## use twisted
-## to build modern
+## use twisted to build
 # [fit] services
 
 ---
