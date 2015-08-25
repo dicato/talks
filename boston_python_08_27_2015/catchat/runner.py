@@ -12,5 +12,5 @@ site = server.Site(Root(factory))
 endpoints.serverFromString(reactor, "tcp:1400").listen(factory)
 endpoints.serverFromString(reactor, "tcp:8080").listen(site)
 
-# Start listening for connections.
+# Start listening for connections (and run the event-loop).
 reactor.run()

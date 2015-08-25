@@ -105,7 +105,25 @@ in Twisted: e.g. new data to new line to new HTTP request.
 
 ---
 
-TODO Example of events: netcatchat protocol snippet
+## example of events (from `chat.py`)
+
+```python
+from twisted.internet import protocol
+
+
+class NetCatChatProtocol(protocol.Protocol):
+    def connectionMade(self):
+        # Called when the protocol is instantiated and the connection is ready.
+        """ ... snipped ... """
+
+    def dataReceived(self, data):
+        # New data (bytes) are available for consuming.
+        """ ... snipped ... """
+
+    def connectionLost(self, reason):
+        # The connection is about to be terminated.
+        """ ... snipped ... """
+```
 
 ---
 
@@ -156,16 +174,27 @@ threading, dispatching events, and more.
 
 ---
 
+## example (from `runner.py`)
+
 ```python
-from twisted.internet import reactor
+from twisted.internet import reactor, endpoints
+from twisted.web import server
 
-def add(a, b):
-    """Add to variables and return them..."""
-    return a + b
+from chat import NetCatChatFactory
+from api import Root
 
-delay = 1.0  # seconds
-reactor.callLater(delay, add, 8, 3)
-# This assumes the reactor is running!
+# Create an instance of the factories.
+factory = NetCatChatFactory()
+site = server.Site(Root(factory))
+
+# Listen on TCP port 1400 for chat and port 8080 for the API.
+endpoints.serverFromString(reactor, "tcp:1400").listen(factory)
+endpoints.serverFromString(reactor, "tcp:8080").listen(site)
+
+# Start listening for connections (and run the event-loop).
+reactor.run()
+
+
 ```
 
 <!--
@@ -232,6 +261,9 @@ The chain of callbacks is processed using the following rules:
     asynchronous analog to a series of `except:` statements.
 4.  If an errback doesn’t raise an exception or return a
     `twisted.python.failure.Failure` instance, switch to callback.
+
+Deferreds will automatically print a stacktrace when being garbage collected,
+it's usually good practice to explicitly add an errback that logs.
 
 See http://twistedmatrix.com/documents/current/core/howto/defer.html
 
