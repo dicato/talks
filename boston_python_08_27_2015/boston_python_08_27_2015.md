@@ -65,7 +65,20 @@ This is a comment and should not render!
 
 ---
 
+## composable & scalable systems
+
+---
+
+## i.e., *service oriented architecture*
+
+---
+
+## i.e., *microservices*
+
+---
+
 # context
+## an example app
 
 ---
 
@@ -78,6 +91,13 @@ This is a comment and should not render!
 
 ---
 
+![fill](images/diagrams.002.png)
+
+---
+
+![fill](images/diagrams.003.png)
+
+---
 (this slide intentionally left blank)
 
 ---
