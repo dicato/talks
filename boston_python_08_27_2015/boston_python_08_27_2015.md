@@ -38,7 +38,7 @@ This is a comment and should not render!
 ---
 
 # [fit] expectations
-## [fit] learn these *5* concepts
+## [fit] learn these *6* concepts
 
 ---
 
@@ -61,13 +61,11 @@ This is a comment and should not render!
 
 ---
 
-# [fit] expectations
-## [fit] *integrate* twisted
+## 6. use twisted to build *systems* & *services*
 
 ---
 
-## use twisted to build
-# [fit] services
+# context
 
 ---
 
@@ -205,6 +203,9 @@ is not usually provided by client code.
 
 Global singleton: there is only one, ever, it can be accessed everywhere by
 importing twisted.internet.reactor.
+
+Note that there are a variety of ways to tell a reactor to listen on a port
+using a specific protocol.
 
 -->
 
