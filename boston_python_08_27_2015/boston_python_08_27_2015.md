@@ -42,11 +42,11 @@ This is a comment and should not render!
 
 ---
 
-## 1. what is async
+## 1. what is twisted
 
 ---
 
-## 2. when to async
+## 2. when to use twisted
 
 ---
 ## 3. event loop (reactor)
@@ -85,12 +85,13 @@ This is a comment and should not render!
 
 ---
 
-## 1. what is async
+## 1. what is twisted
 
 ---
 
 ## twisted is...
 # [fit] **evented** and *asynchronous*
+# [fit] networking
 
 <!--
 
@@ -127,7 +128,7 @@ class NetCatChatProtocol(protocol.Protocol):
 
 ---
 
-## 2. when to async
+## 2. when to use twisted
 
 ---
 
@@ -193,8 +194,6 @@ endpoints.serverFromString(reactor, "tcp:8080").listen(site)
 
 # Start listening for connections (and run the event-loop).
 reactor.run()
-
-
 ```
 
 <!--
