@@ -629,7 +629,7 @@ class ApiResource(resource.Resource):
 
 ---
 
-## user API endpoind
+## user API endpoint
 
 ```python
 class Users(ApiResource):
