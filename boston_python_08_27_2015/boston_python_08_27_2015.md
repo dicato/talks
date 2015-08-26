@@ -390,29 +390,21 @@ UDP datagrams.
 ```python
 from twisted.internet import protocol
 
-
 class NetCatChatProtocol(protocol.Protocol):
     # An instance of a Protocol exists for each established connection.
 
     def connectionMade(self):
         # Called when the protocol is instantiated and the connection is ready.
-        """ ... snipped ... """
 
     def dataReceived(self, data):
         # New data (bytes) are available for consuming.
-        """ ... snipped ... """
 
     def connectionLost(self, reason):
         # The connection is about to be terminated.
-        """ ... snipped ... """
 
     # Has a transport property for interacting with the connection.
 
     # Has a factory property for interacting with the factory that build this.
-
-
-class NetCatChatFactory(protocol.Factory):
-    """ ... snipped ... See below."""
 ```
 
 ---
@@ -439,17 +431,15 @@ state across multiple protocols (e.g. channels on an IRC server).
 ```python
 from twisted.internet import protocol
 
-
 class NetCatChatProtocol(protocol.Protocol):
-    """ ... snipped ... See above."""
-
+    # See above.
 
 class NetCatChatFactory(protocol.Factory):
     # By defining `protocol`, the default implementation of
     # `Factory.buildProtocol` will work fine!
     protocol = NetCatChatProtocol
 
-    """ ... snipped ... """
+    # State and other variables would be stored on the factory.
 ```
 
 ---
@@ -479,29 +469,12 @@ An address varies based on the type of connection: IPv4, IPv6, UNIX, etc.
 ```python
 from twisted.internet import protocol
 
-
 class NetCatChatProtocol(protocol.Protocol):
     # An instance of a Protocol exists for each established connection.
 
     def connectionMade(self):
-        # Called when the protocol is instantiated and the connection is ready.
-
-        """ ... snipped ..."""
-
         # The connection has been established, perform greetings here.
         self.transport.write(self.factory.banner)
-
-    def dataReceived(self, data):
-        """ ... snipped ..."""
-
-    def connectionLost(self, reason):
-        """ ... snipped ..."""
-
-    """ ... snipped ..."""
-
-
-class NetCatChatFactory(protocol.Factory):
-    """ ... snipped ... See above."""
 ```
 
 ---
@@ -535,9 +508,6 @@ class NetCatChatFactory(protocol.Factory):
 ![fill](images/diagrams.006.png)
 
 ---
-<!--
-Show code here.
--->
 
 ```python
 import json
@@ -548,8 +518,6 @@ from twisted.web import resource, server
 
 
 class ApiResource(resource.Resource):
-    # Note that this is available as self.server for every resource.
-
     def __init__(self, chat_factory, *args, **kwargs):
         # This needs a reference to the NetCatChat factory object.
         self.chat_factory = chat_factory

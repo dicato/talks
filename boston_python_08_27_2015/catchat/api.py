@@ -6,8 +6,6 @@ from twisted.web import resource, server
 
 
 class ApiResource(resource.Resource):
-    # Note that this is available as self.server for every resource.
-
     def __init__(self, chat_factory, *args, **kwargs):
         # This needs a reference to the NetCatChat factory object.
         self.chat_factory = chat_factory
