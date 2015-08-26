@@ -591,7 +591,7 @@ class NetCatChatProtocol(protocol.Protocol):
 
 # admin console
 1. current user count
-2. set banner/MOTD
+2. set banner
 
 ---
 
