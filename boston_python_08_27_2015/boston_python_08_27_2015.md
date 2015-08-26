@@ -612,12 +612,7 @@ class NetCatChatProtocol(protocol.Protocol):
 ---
 
 ```python
-import json
-
-from twisted.internet import reactor, task
-from twisted.python import log
-from twisted.web import resource, server
-
+from twisted.web import resource
 
 class ApiResource(resource.Resource):
     def __init__(self, chat_factory, *args, **kwargs):
