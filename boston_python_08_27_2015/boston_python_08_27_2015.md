@@ -646,14 +646,18 @@ class Users(ApiResource):
 class Banner(ApiResource):
     isLeaf = True
 
-    def _set_banner(self, banner):
-        # ... error handling ;-)
-        self.chat_factory.banner = bytes(banner)  # unicode to bytes
-
     def render_GET(self, request):
         # Get the banner.
         result = {'banner': self.chat_factory.banner}
         return json.dumps(result, indent=4, separators=(',', ': ')) + "\n"
+```
+
+---
+
+```python
+    def _set_banner(self, banner):
+        # ... error handling ;-)
+        self.chat_factory.banner = bytes(banner)  # unicode to bytes
 
     def render_POST(self, request):
         # Set the banner.
