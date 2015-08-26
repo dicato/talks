@@ -682,6 +682,99 @@ reactor.run()
 
 ---
 
+## what about the
+## *client code*?
+
+---
+
+# api client code / user count
+
+```python
+def get_user_count():
+    url = API_URL + '/users/'
+    try:
+        r = requests.get(url)
+    except Exception as e:  # Gotta catch 'em all!
+        return None
+
+    result = r.json()
+    return result['users']
+```
+
+---
+
+# api client code / get banner
+
+```python
+def get_banner():
+    url = API_URL + '/banner/'
+    try:
+        r = requests.get(url)
+    except Exception as e:  # Gotta catch 'em all!
+        return None
+
+    result = r.json()
+    return result['banner']
+```
+
+---
+
+# api client code / set banner
+
+```python
+def set_banner(banner):
+    url = API_URL + '/banner/'
+    data = json.dumps({'banner': banner})
+    try:
+        r = requests.post(url, data=data)
+    except Exception as e:  # Gotta catch 'em all!
+        return None
+```
+
+---
+
+## now serve it using
+# *flask*
+
+---
+
+```python
+app = Flask(__name__)
+API_URL = 'http://127.0.0.1:8080'
+
+@app.route("/")
+def splash():
+    user_count = get_user_count()
+    banner = get_banner()
+    return render_template('index.html', user_count=user_count, banner=banner)
+
+
+@app.route('/set_banner/', methods=['POST'])
+def banner():
+    banner = request.values.get('banner', "")
+    set_banner(banner)
+    return redirect(url_for('splash'))
+
+
+if __name__ == "__main__":
+    app.run()
+```
+
+---
+
+# tangent: `twistd`
+`twistd` is a daemon that helps run applications.
+
+`twistd web --wsgi=dashboard.app`
+
+Be careful when running as a service under upstart/systemd/init!
+
+---
+
+# demo
+
+---
+
 ## What about data *persistence?*
 
 ---
