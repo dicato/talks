@@ -607,6 +607,10 @@ class NetCatChatProtocol(protocol.Protocol):
 
 ---
 
+# add transition about building API!!
+
+---
+
 ```python
 import json
 
