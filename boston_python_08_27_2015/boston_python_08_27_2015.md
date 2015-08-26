@@ -140,7 +140,8 @@ from twisted.internet import protocol
 
 class NetCatChatProtocol(protocol.Protocol):
     def connectionMade(self):
-        # Called when the protocol is instantiated & the connection is ready.
+        # Called when the protocol is instantiated &
+        # the connection is ready.
 
     def dataReceived(self, data):
         # New data (bytes) are available for consuming.
