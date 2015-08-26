@@ -2,12 +2,12 @@
 This is a comment and should not render!
 -->
 
-# [fit] twisted
-# [fit] _concepts & patterns_
+# twisted
+## _concepts & patterns_
 
 ---
 
-# [fit] introduction
+# introduction
 
 ---
 
@@ -37,8 +37,17 @@ This is a comment and should not render!
 
 ---
 
-# [fit] expectations
-## [fit] learn these *6* concepts
+![fit](images/percipient_print_ad.jpg)
+
+<!---
+We are a local cybersecurity startup. If you are interested in security, come
+and talk to us after the talk or checkout out strongarm.io.
+-->
+
+---
+
+# **expectations**
+## learn these *6* concepts
 
 ---
 
@@ -106,9 +115,9 @@ This is a comment and should not render!
 
 ---
 
-## twisted is...
-# [fit] **evented** and *asynchronous*
-# [fit] networking
+## twisted:
+## an *event-driven*
+## networking engine
 
 <!--
 
@@ -131,16 +140,13 @@ from twisted.internet import protocol
 
 class NetCatChatProtocol(protocol.Protocol):
     def connectionMade(self):
-        # Called when the protocol is instantiated and the connection is ready.
-        """ ... snipped ... """
+        # Called when the protocol is instantiated & the connection is ready.
 
     def dataReceived(self, data):
         # New data (bytes) are available for consuming.
-        """ ... snipped ... """
 
     def connectionLost(self, reason):
         # The connection is about to be terminated.
-        """ ... snipped ... """
 ```
 
 ---
@@ -149,10 +155,10 @@ class NetCatChatProtocol(protocol.Protocol):
 
 ---
 
-## [fit] high-level *networking* APIs
-## [fit] pre-built protocol parsing
-### handling many **I/O bound** tasks
-### *event-driven* programming
+1. high-level *networking* APIs
+1. large protocol library
+1. scalable due to asynchronous design
+1. mature, with an emphasis on quality
 
 <!--
 
@@ -164,11 +170,11 @@ Instead of polling a socket, you're told when data is available, etc.
 
 ---
 
-# [fit] twisted will *not*...
+# twisted will *not*
 
-* ...magically make code **non-blocking**
-* ...help with CPU-bound tasks<sup>†</sup>
-* ...be the simplest library to make a simple HTTP request<sup>‡</sup>
+* magically make code **non-blocking**
+* help with CPU-bound tasks<sup>†</sup>
+* be the simplest library to make a simple HTTP request<sup>‡</sup>
 
 <!--
 
@@ -183,8 +189,8 @@ Instead of polling a socket, you're told when data is available, etc.
 
 ---
 
-## [fit] event loop APIs:
-### networking, threading, event dispatching, timing, etc.
+## event loop APIs:
+### *networking, threading, event dispatching, timing, etc.*
 
 <!--
 
@@ -195,9 +201,9 @@ threading, dispatching events, and more.
 
 ---
 
-# [fit] reactor depends on
-## [fit] *platform* and *other factors*
-### reactor is a **global singleton**
+## reactor depends on
+## *platform* and *usage*
+### (reactor is a **global singleton**)
 
 <!--
 
@@ -248,8 +254,8 @@ using a specific protocol.
 
 ---
 
-## [fit] a **deferred** is a *promise*
-## [fit] that a function will eventually have a **result**
+## a **deferred** is a *promise*
+### that a function will eventually have a **result**
 
 <!--
 
@@ -262,7 +268,7 @@ previous callback.
 
 ---
 
-### in other words...
+### in other words:
 ### deferreds are a *placeholder* for a future *result*
 
 <!--
@@ -361,8 +367,7 @@ errback separately don't end up "next" to each other in the callback chain.
 
 ---
 
-# `Protocols`
-## event handlers for a *connection*
+# `Protocols`: event handlers for a *connection*
 
 * Each new connection gets a new `Protocol` **instance**
 * Basic events include:
@@ -414,9 +419,9 @@ class NetCatChatFactory(protocol.Factory):
 
 ---
 
-# [fit] `ProtocolFactory`
-### builds `Protocol` instances
+## `ProtocolFactory`
 ### keeps **state** across `Protocols`
+### builds `Protocol` instances
 
 <!--
 
@@ -515,7 +520,7 @@ class NetCatChatFactory(protocol.Factory):
 
 ---
 
-## admin console
+# admin console
 1. current user count
 2. set banner/MOTD
 
@@ -632,11 +637,11 @@ class Banner(ApiResource):
 
 ---
 
-### How would you *scale* the twisted server?
+### How would you *scale* to many twisted servers?
 
 ---
 
-# [fit] Topics we wish we had time for
+# what to research next
 
 * trial: testing, the twisted way
 * inline callbacks: synchronous-looking deferreds in twisted
@@ -647,3 +652,11 @@ Some topics we didn't really have time for, but this is at least some keywords
 to look up!
 
 -->
+
+---
+
+## thank you
+## github.com/percipient/talks
+
+patrick@percipientnetworks.com
+stephen@percipientnetworks.com
