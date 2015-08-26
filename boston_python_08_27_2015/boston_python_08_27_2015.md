@@ -18,7 +18,7 @@ This is a comment and should not render!
 ## _lead engineer @ Percipient Networks_
 ## &
 ## _mozillian_
-## @_clokep_
+## _github.com/clokep_
 
 ---
 
@@ -28,7 +28,7 @@ This is a comment and should not render!
 
 ## _co-founder & VP, engineering_
 ## _@ Percipient Networks_
-## @_dicato_
+## _github.com/dicato_
 
 ---
 
@@ -43,6 +43,11 @@ This is a comment and should not render!
 We are a local cybersecurity startup. If you are interested in security, come
 and talk to us after the talk or checkout out strongarm.io.
 -->
+
+---
+
+# **questions**
+# welcome
 
 ---
 
@@ -834,8 +839,10 @@ to look up!
 
 ---
 
-## thank you
+## thank you - questions?
 ## github.com/percipient/talks
 
 patrick@percipientnetworks.com
 stephen@percipientnetworks.com
+
+(btw, we are sponsoring DjangoCon! Find us!)
