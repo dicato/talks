@@ -344,6 +344,10 @@ reactor.run()  # Start the eventloop.
 
 ---
 
+# Demo
+
+---
+
 ## Advanced example, part 1. (from `deferred_ex_2.py`)
 
 ```python
@@ -418,6 +422,10 @@ def gotOrgs(data):
 ## Advanced Example Deferred flow (from `deferred_ex.py`)
 
 ![inline](images/deferred_ex_2.png)
+
+---
+
+# Demo
 
 ---
 
@@ -557,6 +565,10 @@ class NetCatChatProtocol(protocol.Protocol):
         # The connection has been established, perform greetings here.
         self.transport.write(self.factory.banner)
 ```
+
+---
+
+# Demo
 
 ---
 
