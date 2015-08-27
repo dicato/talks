@@ -56,6 +56,11 @@ and talk to us after the talk or checkout out strongarm.io.
 
 ---
 
+### anyone here use Twisted?
+### anyone here contribute to Twisted?
+
+---
+
 # **expectations**
 ## learn these *6* concepts
 
