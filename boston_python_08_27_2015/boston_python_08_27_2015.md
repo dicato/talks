@@ -11,7 +11,7 @@ This is a comment and should not render!
 
 ---
 
-![right fill](https://avatars0.githubusercontent.com/u/517124?v=3&s=400)
+![right 65%](images/clokep.jpg)
 
 # [fit] Patrick Cloke
 
@@ -125,9 +125,6 @@ What twisted protocols are. How to implement one. What the interfaces are.
 ---
 
 ![fill](images/diagrams.003.png)
-
----
-(this slide intentionally left blank)
 
 ---
 
@@ -305,6 +302,8 @@ endpoints.serverFromString(reactor, "tcp:1400").listen(factory)
 
 # Start listening for connections (and run the event-loop).
 reactor.run()
+# Note that any code after this point will *not* be executed. reactor.run enters
+# an infinite loop until shutdown.
 ```
 
 <!--
@@ -770,6 +769,8 @@ endpoints.serverFromString(reactor, "tcp:8080").listen(site)
 
 # Start listening for connections (and run the event-loop).
 reactor.run()
+# Note that any code after this point will *not* be executed. reactor.run enters
+# an infinite loop until shutdown.
 ```
 
 ---
@@ -914,6 +915,25 @@ Be careful when running as a service under upstart/systemd/init!
 * deferreds
 * protocols (factories, transports)
 * using Twisted to build larger systems/services
+
+---
+
+potential answers SLIDE
+
+---
+
+# recap
+
+---
+
+1. what is async programming
+2. what is twisted
+3. when/why to use twisted
+4. event loop (reactor)
+5. deferreds
+6. protocols (and more)
+
+bonus: twisted in systems & services
 
 ---
 

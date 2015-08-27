@@ -24,3 +24,6 @@ endpoints.serverFromString(reactor, "tcp:8080").listen(site)
 logger.info("Listening for netcat on port 1400")
 logger.info("Listening for HTTP on port 8080")
 reactor.run()
+
+# Note that any code after this point will *not* be executed. reactor.run enters
+# an infinite loop until shutdown.
