@@ -172,7 +172,7 @@ http://krondo.com/
 ---
 
 ## twisted:
-## an *event-drive*, **asynchronous**
+## an *event-driven*, **asynchronous**
 ## networking engine
 
 ---
