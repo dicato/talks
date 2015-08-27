@@ -51,6 +51,11 @@ and talk to us after the talk or checkout out strongarm.io.
 
 ---
 
+![left fill](images/github.png)
+# github.com/percipient/talks
+
+---
+
 # **expectations**
 ## learn these *6* concepts
 
