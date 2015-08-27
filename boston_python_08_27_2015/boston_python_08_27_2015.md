@@ -459,10 +459,16 @@ d.addCallbacks(callback_2, errback_2)
 d.addBoth(cleanup)
 ```
 
+1. Each added callback/errback appends a new **level** to the chain
+2. Errors in callbacks propagate to the *next* errback
+3. Propagation from the errback chain to the callback chain is possible
+
 <!--
 
 Callbacks and errbacks *always* stack with passthrus, adding a callback and an
 errback separately don't end up "next" to each other in the callback chain.
+
+If you don't want to go to the callback chain, propagate your errors!
 
 -->
 
