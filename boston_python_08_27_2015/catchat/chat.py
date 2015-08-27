@@ -1,4 +1,7 @@
 from twisted.internet import protocol
+from twisted.logger import Logger
+
+logger = Logger()
 
 
 class NetCatChatProtocol(protocol.Protocol):
@@ -17,6 +20,7 @@ class NetCatChatProtocol(protocol.Protocol):
         # New data (bytes) are available for consuming.
 
         # Notify the other users of this message.
+        logger.info("%s: %s" % (self.transport.getPeer().host, data))
         self.factory.broadcast_message(self, data)
 
     def connectionLost(self, reason):
@@ -42,7 +46,7 @@ class NetCatChatFactory(protocol.Factory):
         # All the connected chatters.
         self.clients = set()
         # A message to send to each client on connection.
-        self.banner = b'Welcome to NetCatChat!\t\n'
+        self.banner = b'Welcome to NetCatChat!\r\n'
 
     def broadcast_message(self, sender, msg):
         """Send a message to all connected clients."""

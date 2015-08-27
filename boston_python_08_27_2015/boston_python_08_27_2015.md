@@ -845,7 +845,7 @@ Be careful when running as a service under upstart/systemd/init!
 
 * trial: testing, the twisted way
 * inline callbacks: synchronous-looking deferreds in twisted
-* `twistd`: `tap` vs. `tac` (hint, use `tap`)
+* `twistd`: running twisted code as a service
 
 <!--
 
