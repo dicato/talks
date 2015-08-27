@@ -900,6 +900,23 @@ Be careful when running as a service under upstart/systemd/init!
 
 ---
 
+## Recap
+
+* what is async programming
+* what is Twisted
+* when/why to use Twisted
+
+---
+
+## Twisted Recap
+
+* event loop (reactor)
+* deferreds
+* protocols (factories, transports)
+* using Twisted to build larger systems/services
+
+---
+
 # what to research next
 
 * trial: testing, the twisted way
