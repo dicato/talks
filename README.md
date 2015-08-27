@@ -8,4 +8,4 @@ Talks and presentations given by members of the Percipient team.
 presented a talk on the [Twisted Networking Framework](https://twistedmatrix.com/trac/);
 what it is, common concepts, and how to apply them.
 
-Rendered slides are available [here](https://github.com/percipient/talks/blob/master/boston_python_08_27_2015/boston_python_08_27_2015.pdf).
+Rendered slides are available [here as a pdf](https://github.com/percipient/talks/blob/master/boston_python_08_27_2015/boston_python_08_27_2015.pdf).
