@@ -144,7 +144,7 @@ http://krondo.com/
 
 ---
 
-# threaded
+# multiprocessing
 ![inline](images/threaded.png)
 
 multiprocessing uses same model
