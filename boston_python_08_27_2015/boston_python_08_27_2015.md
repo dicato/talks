@@ -73,6 +73,12 @@ and talk to us after the talk or checkout out strongarm.io.
 
 ## 5. protocols (and more)
 
+<!--
+
+What twisted protocols are. How to implement one. What the interfaces are.
+
+-->
+
 ---
 
 ## 6. use twisted to build *systems* & *services*
@@ -121,8 +127,17 @@ and talk to us after the talk or checkout out strongarm.io.
 ---
 
 ## twisted:
-## an *event-driven*
+## an *event-drive*, **asynchronous**
 ## networking engine
+
+---
+
+## event-driven **&** asyncrhonous
+
+* user code is triggered when something it cares about happens
+* examples: new connection, data is available,
+HTTP request received, etc.
+* non-blocking while waiting for I/O (e.g. bytes on a socket)
 
 <!--
 
@@ -137,23 +152,12 @@ in Twisted: e.g. new data to new line to new HTTP request.
 
 ---
 
-## example of events (from `chat.py`)
+## networking engine
 
-```python
-from twisted.internet import protocol
-
-
-class NetCatChatProtocol(protocol.Protocol):
-    def connectionMade(self):
-        # Called when the protocol is instantiated &
-        # the connection is ready.
-
-    def dataReceived(self, data):
-        # New data (bytes) are available for consuming.
-
-    def connectionLost(self, reason):
-        # The connection is about to be terminated.
-```
+* supports many clients & servers out of the box
+e.g. web (HTTP), chat (IRC, XMPP), mail (SMTP/IMAP/POP3)
+* easily develop fully custom protocols
+* easily customize behavior of built in protocols
 
 ---
 
@@ -172,6 +176,8 @@ Built in parsers for many protocols (IMAP, SMTP, IRC, SSH, HTTP, etc.)
 
 Instead of polling a socket, you're told when data is available, etc.
 
+Stable, production ready. Confident it will not break.
+
 -->
 
 ---
@@ -179,10 +185,12 @@ Instead of polling a socket, you're told when data is available, etc.
 # twisted will *not*
 
 * magically make code **non-blocking**
-* help with CPU-bound tasks<sup>†</sup>
+i.e. help with CPU-bound tasks<sup>†</sup>
 * be the simplest library to make a simple HTTP request<sup>‡</sup>
 
 <!--
+
+E.g. generating a key or doing complex calculations (physics for a game).
 
 † Unless you want to coiterate, and also have networking tasks, etc.
 ‡ Although there is treq: requests built on Twisted
@@ -200,8 +208,13 @@ Instead of polling a socket, you're told when data is available, etc.
 
 <!--
 
+What are events? You might be familiar with them from other event-loops
+(GTK/QT): button clicks, etc.
+
 The reactor is the Twisted event loop. The reactor provides APIs for networking,
 threading, dispatching events, and more.
+
+Most APIs will not be touched by users.
 
 -->
 
@@ -832,6 +845,7 @@ Be careful when running as a service under upstart/systemd/init!
 
 * trial: testing, the twisted way
 * inline callbacks: synchronous-looking deferreds in twisted
+* `twistd`: `tap` vs. `tac` (hint, use `tap`)
 
 <!--
 
@@ -849,3 +863,11 @@ patrick@percipientnetworks.com
 stephen@percipientnetworks.com
 
 (btw, we are sponsoring DjangoCon! Find us!)
+
+<!--
+
+DjangoCon in Austin, in a couple of weeks. We'll be attending the sprints.
+
+Come find us, talk to us about Django, Twisted, whatever.
+
+-->
