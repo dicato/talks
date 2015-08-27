@@ -56,22 +56,26 @@ and talk to us after the talk or checkout out strongarm.io.
 
 ---
 
-## 1. what is twisted
+## 1. what is async programming
 
 ---
 
-## 2. when/why to use twisted
-
----
-## 3. event loop (reactor)
+## 2. what is twisted
 
 ---
 
-## 4. deferreds
+## 3. when/why to use twisted
+
+---
+## 4. event loop (reactor)
 
 ---
 
-## 5. protocols (and more)
+## 5. deferreds
+
+---
+
+## 6. protocols (and more)
 
 <!--
 
@@ -81,7 +85,7 @@ What twisted protocols are. How to implement one. What the interfaces are.
 
 ---
 
-## 6. use twisted to build *systems* & *services*
+## BONUS: use twisted to build *systems* & *services*
 
 ---
 
@@ -122,7 +126,48 @@ What twisted protocols are. How to implement one. What the interfaces are.
 
 ---
 
-## 1. what is twisted
+## 1. what is async programming
+
+---
+
+# synchronous
+![inline](images/sync.png)
+
+http://krondo.com/
+
+---
+
+# threaded
+![inline](images/threaded.png)
+
+http://krondo.com/
+
+---
+
+# threaded
+![inline](images/threaded.png)
+
+multiprocessing uses same model
+
+http://krondo.com/
+
+---
+
+# async
+![inline](images/async.png)
+
+http://krondo.com/
+
+---
+
+# blocking
+![inline](images/block.png)
+
+http://krondo.com/
+
+---
+
+## 2. what is twisted
 
 ---
 
@@ -161,7 +206,7 @@ e.g. web (HTTP), chat (IRC, XMPP), mail (SMTP/IMAP/POP3)
 
 ---
 
-## 2. when/why to use twisted
+## 3. when/why to use twisted
 
 ---
 
@@ -199,7 +244,7 @@ E.g. generating a key or doing complex calculations (physics for a game).
 
 ---
 
-## 3. event loop (reactor)
+## 4. event loop (reactor)
 
 ---
 
@@ -266,7 +311,7 @@ using a specific protocol.
 
 ---
 
-## 4. deferreds
+## 5. deferreds
 
 ---
 
@@ -474,7 +519,7 @@ If you don't want to go to the callback chain, propagate your errors!
 
 ---
 
-## 5. protocols (and more)
+## 6. protocols (and more)
 
 ---
 
