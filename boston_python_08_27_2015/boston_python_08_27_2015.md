@@ -889,7 +889,7 @@ Be careful when running as a service under upstart/systemd/init!
 
 ---
 
-## Is there a better, more reusable way?
+## Is there a *better, more reusable* way?
 
 ---
 
