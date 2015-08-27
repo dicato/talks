@@ -676,7 +676,10 @@ class NetCatChatProtocol(protocol.Protocol):
 
 ---
 
-# add transition about building API!!
+## Build the chat server API
+1. `GET /users/` --> returns user count
+2. `GET /banner/` --> returns the current banner
+3. `POST /banner/` --> sets the current banner
 
 ---
 
