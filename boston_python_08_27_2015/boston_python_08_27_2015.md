@@ -22,7 +22,7 @@ This is a comment and should not render!
 
 ---
 
-![left fill](https://avatars0.githubusercontent.com/u/542728?v=3&s=400)
+![left fill](images/dicato.png)
 
 # [fit] Stephen DiCato
 
