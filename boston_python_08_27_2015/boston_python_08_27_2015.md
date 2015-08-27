@@ -929,6 +929,7 @@ Be careful when running as a service under upstart/systemd/init!
 * trial: testing, the twisted way
 * inline callbacks: synchronous-looking deferreds in twisted
 * `twistd`: running twisted code as a service
+* read `http://krondo.com/?page_id=1327`
 
 <!--
 
