@@ -901,6 +901,12 @@ Be careful when running as a service under upstart/systemd/init!
 
 ---
 
+* focus on keeping state in one place
+* make Twisted services stateless
+* load balance accordingly
+
+---
+
 ## Recap
 
 * what is async programming
@@ -915,25 +921,6 @@ Be careful when running as a service under upstart/systemd/init!
 * deferreds
 * protocols (factories, transports)
 * using Twisted to build larger systems/services
-
----
-
-potential answers SLIDE
-
----
-
-# recap
-
----
-
-1. what is async programming
-2. what is twisted
-3. when/why to use twisted
-4. event loop (reactor)
-5. deferreds
-6. protocols (and more)
-
-bonus: twisted in systems & services
 
 ---
 
