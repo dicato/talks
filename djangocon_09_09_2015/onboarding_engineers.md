@@ -25,7 +25,19 @@ This is a comment and should not render!
 
 ---
 
+> working dev env in an hour?
+
+> contribute (patch, pr) on first day?
+
+---
+
 ## 2. Document important stuff
+
+---
+
+### *accounts*: GitHub, Slack, Trello
+### *host setup*: brew, git, virtualenv
+### *developer guide*: conventions, process
 
 ---
 
@@ -33,7 +45,19 @@ This is a comment and should not render!
 
 ---
 
+### *1-on-1* pairing
+### *dedicated* time
+
+---
+
 ## 4. Package your stuff
+
+---
+
+### vagrant
+### docker
+### GitHub's Boxen
+### `setup.py`
 
 ---
 
@@ -41,11 +65,20 @@ This is a comment and should not render!
 
 ---
 
-### **Bonus:** Checkout Kate Heddleston on Fog Creek's blog
+* `fab dev provision`
+* `fab staging deploy`
+
+**focus on hiding the rough edges**
+
+---
+
+### **Bonus:** Checkout Kate Heddleston's blog & Fog Creek interview
 
 ---
 
 > I always tell beginners, “If you come across an issue, research it for an hour and then come talk to me.”
+
+https://kateheddleston.com/blog
 
 ---
 
