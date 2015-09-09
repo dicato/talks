@@ -21,6 +21,20 @@ This is a comment and should not render!
 
 ---
 
+# Why?
+
+---
+
+### *recruiting* talent is hard
+### *hiring* talent is hard
+### *retaining* talent is hard
+
+---
+
+### You **are not** done on their first day!
+
+---
+
 ## 1. Set Goals
 
 ---
@@ -54,10 +68,10 @@ This is a comment and should not render!
 
 ---
 
+### `setup.py`
 ### vagrant
 ### docker
 ### GitHub's Boxen
-### `setup.py`
 
 ---
 
@@ -79,6 +93,14 @@ This is a comment and should not render!
 > I always tell beginners, “If you come across an issue, research it for an hour and then come talk to me.”
 
 https://kateheddleston.com/blog
+
+---
+
+1. Set goals
+1. Document important stuff
+1. Divide & Conquer
+1. Package your stuff
+1. Focus on tooling
 
 ---
 
