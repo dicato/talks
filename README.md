@@ -2,6 +2,8 @@
 
 Talks and presentations given by members of the Percipient team.
 
+Use the Deckset.app to render the markdown into a pretty PDF.
+
 ## Boston Python - August 27, 2015
 
 [Patrick Cloke](https://github.com/clokep) and [Stephen DiCato](https://github.com/dicato)
