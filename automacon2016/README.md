@@ -6,8 +6,8 @@ service on modern cloudy infrastructure.
 
 ## Abstract
 ### Painful obstacles to running a professional security product on cloud infrastructure
-It turns out not everything is a web app! In this talk we'll cover some noteworthy
-obstacles we've encountered over the last year building and operating a DNS
-and malware blackhole on AWS and Google Cloud, covering problems with iptables,
-load balancers, networking, docker, kubernetes, and the challenges of protecting
-moving endpoints.
+It turns out not everything is a web app! In this talk we'll cover noteworthy
+obstacles encountered over the last year building and operating DNS and
+security services on AWS and Google Cloud. Specifically, we'll discuss problems
+with iptables, load balancers, networking, docker, kubernetes, and the challenges
+of protecting moving endpoints.
