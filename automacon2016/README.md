@@ -1,6 +1,6 @@
 # AutomaCon 2.0 - September 27-29, 2016
 
-[Elliot Murphy](https://github.com/clokep) and [Stephen DiCato](https://github.com/dicato)
+[Elliot Murphy](https://github.com/statik) and [Stephen DiCato](https://github.com/dicato)
 are proposing a lightning talk on challenges and obstacles to running a security
 service on modern cloudy infrastructure.
 
