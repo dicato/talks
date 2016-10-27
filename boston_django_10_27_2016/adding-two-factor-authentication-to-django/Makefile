@@ -226,6 +226,6 @@ dummy:
 
 
 slides:
-	$(SPHINXBUILD) -b slides $(ALLSPHINXOPTS) $(BUILDDIR)/slides
+	$(SPHINXBUILD) -b slides $(ALLSPHINXOPTS) slides
 	@echo "Build finished. The HTML slides are in $(BUILDDIR)/slides."
 

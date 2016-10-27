@@ -16,6 +16,6 @@ Or to continually build changes:
 
 .. code-block:: bash
 
-    sphinx-autobuild -b slides -d _build/doctrees   . _build/slides
+    sphinx-autobuild -b slides -d _build/doctrees . slides
 
 Slides are available here.
