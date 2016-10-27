@@ -1,9 +1,10 @@
-## Django Boston Meetup October 27, 2016
+Django Boston Meetup October 27, 2016
+#####################################
 
-[Patrick Cloke](https://github.com/clokep) presented a lightning talk on the
-[django-allauth-2fa](https://github.com/percipient/django-allauth-2fa) library,
-which helps add two-factor support to Django projects which use
-[django-allauth](https://github.com/pennersr/django-allauth).
+`Patrick Cloke <https://github.com/clokep/>`_ presented a lightning talk on the
+`django-allauth-2fa <https://github.com/percipient/django-allauth-2fa/>`_
+library, which helps add two-factor support to Django projects which use
+`django-allauth <https://github.com/pennersr/django-allauth>`_.
 
 To build the slides:
 
