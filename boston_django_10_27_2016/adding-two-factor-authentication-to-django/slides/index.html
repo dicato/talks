@@ -1,0 +1,557 @@
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+--><!DOCTYPE html>
+
+
+<html>
+<head>
+  <title>Adding Two-Factor Authentication to Django (with django-allauth) &mdash; Adding Two-Factor Authentication to Django</title>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <meta name="hieroglyph-title" data-config-title>
+  <meta name="hieroglyph-subtitle" data-config-subtitle>
+  <meta name="hieroglyph-presenter" data-config-presenter>
+
+  
+  <link rel="stylesheet" media="all"
+        href="_static/theme/css/default.css">
+  <link rel="stylesheet" media="all"
+        href="_static/theme/css/hieroglyph.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)"
+        href="_static/theme/css/phone.css">
+
+    
+    <link rel="stylesheet" href="_static/basic.css"
+          type="text/css" />
+    
+
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2016.10.21',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+
+    <script data-main="_static/js/slides"
+            src="_static/js/require-1.0.8.min.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="Adding Two-Factor Authentication to Django" href="#" /> 
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+  
+
+  
+    <slide class="title-slide segue nobackground level-1" id="adding-two-factor-authentication-to-django-with-django-allauth">
+    <hgroup>
+      <h1>Adding Two-Factor Authentication to Django (with <code class="docutils literal"><span class="pre">django-allauth</span></code>)</h1>
+    </hgroup>
+    <article class="">
+      <p>Django Boston</p>
+<p>October 27, 2016</p>
+<p>Patrick Cloke</p>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-2" id="who-am-i">
+    <hgroup>
+      <h2>Who am I?</h2>
+    </hgroup>
+    <article class="">
+      <a class="reference internal image-reference" href="_images/clokep.jpg"><img alt="_images/clokep.jpg" class="align-right" src="_images/clokep.jpg" style="width: 422.0px; height: 339.5px;" /></a>
+<p>Patrick Cloke</p>
+<ul class="simple">
+<li>Lead Software Engineer &#64; Percipient Networks working on Strongarm (<a class="reference external" href="https://strongarm.io">https://strongarm.io</a>)</li>
+<li><a class="reference external" href="https://mozillians.org/u/clokep/">Mozillian</a> (Instantbird &amp; Mozilla Thunderbird instant messaging)</li>
+<li><a class="reference external" href="https://github.com/clokep">github.com/clokep</a> / <a class="reference external" href="https://bitbucket.org/clokep/">bitbucket.com/clokep</a></li>
+<li><a class="reference external" href="https://twitter.com/clokep">&#64;clokep on Twitter</a></li>
+<li><a class="reference external" href="http://patrick.cloke.us">http://patrick.cloke.us</a></li>
+</ul>
+<img alt="_images/strongarm_logo.png" class="align-center" src="_images/strongarm_logo.png" />
+
+
+
+
+    </article>
+  </slide>  <slide class="level-2" id="two-factor-multi-factor-authentication">
+    <hgroup>
+      <h2>Two-factor (multi-factor) authentication <a class="footnote-reference" href="#id3" id="id1">[1]</a> <a class="footnote-reference" href="#id4" id="id2">[2]</a></h2>
+    </hgroup>
+    <article class="">
+      <dl class="docutils">
+<dt>Two-factor / mutli-factor / 2FA:</dt>
+<dd>Requiring a login to have multiple pieces of evidence that a user owns an
+account.</dd>
+</dl>
+<div class="figure align-right">
+<a class="reference internal image-reference" href="_images/SecureID_token_new.JPG"><img alt="_images/SecureID_token_new.JPG" src="_images/SecureID_token_new.JPG" style="width: 273.3px; height: 153.3px;" /></a>
+</div>
+<p>Requires two pieces of evidence:</p>
+<ol class="arabic simple">
+<li>Knowledge (something the user knows): e.g. a password, passphrase, PIN.</li>
+<li>Possession (something the user has): e.g. RSA SecureID, mobile devices / soft
+token, smart cards.</li>
+<li>Inherence (something the user is): e.g. biometrics: fingerprint, retina, or
+voice.</li>
+</ol>
+<table class="docutils footnote" frame="void" id="id3" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td><a class="reference external" href="https://en.wikipedia.org/wiki/Multi-factor_authentication">Multi-factor authentication</a> on Wikipedia</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id4" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td><a class="reference external" href="https://commons.wikimedia.org/wiki/File:SecureID_token_new.JPG">SecureID token new.JPG</a> on Wikimedia Commons, released into Public Domain</td></tr>
+</tbody>
+</table>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-2" id="id5">
+    <hgroup>
+      <h2>Two-factor (multi-factor) authentication</h2>
+    </hgroup>
+    <article class="">
+      <p>Generally the second factor is a user's phone via one of two mechanisms:</p>
+<a class="reference internal image-reference" href="_images/microsoft-authenticator.png"><img alt="_images/microsoft-authenticator.png" class="align-right" src="_images/microsoft-authenticator.png" style="width: 172.8px; height: 307.2px;" /></a>
+<ul class="simple">
+<li>TOTP (Time-based One-Time Password Algorithm)  <a class="footnote-reference" href="#id7" id="id6">[3]</a>, e.g. Google Authenticator,
+Microsoft Authenticator, Facebook Code Generator, etc. (See <span class="target" id="index-0"></span><a class="rfc reference external" href="https://tools.ietf.org/html/rfc6238.html"><strong>RFC 6238</strong></a>.)</li>
+<li>SMS / Text message</li>
+</ul>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<ul class="last simple">
+<li>Showing SMS messages on mobile phone lock screens allows easy bypassing of
+two-factor authentication.</li>
+<li>Receiving emails (i.e. password reset emails) on a mobile phone recombines
+the two-factors back to a single factor.</li>
+</ul>
+</div>
+<table class="docutils footnote" frame="void" id="id7" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id6">[3]</a></td><td><a class="reference external" href="https://en.wikipedia.org/wiki/Time-based_One-time_Password_Algorithm">Time-based One-time Password Algorithm</a> on Wikipedia</td></tr>
+</tbody>
+</table>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-2" id="django-allauth">
+    <hgroup>
+      <h2><code class="docutils literal"><span class="pre">django-allauth</span></code> <a class="footnote-reference" href="#id11" id="id8">[4]</a></h2>
+    </hgroup>
+    <article class="">
+      <a class="reference internal image-reference" href="_images/django-logo-negative.png"><img alt="_images/django-logo-negative.png" class="align-right" src="_images/django-logo-negative.png" style="width: 300.0px; height: 136.5px;" /></a>
+<p>A reusable Django <a class="footnote-reference" href="#id12" id="id9">[5]</a> package to work with authentication, registration, account management, and
+social authentication. <a class="footnote-reference" href="#id13" id="id10">[6]</a></p>
+<ul>
+<li><p class="first">Supports both local (i.e. <code class="docutils literal"><span class="pre">django.contrib.auth</span></code>) and &quot;social&quot; accounts (e.g.
+OpenID, OAuth, OAuth2 providers)</p>
+<blockquote>
+<div><ul class="simple">
+<li>Many social providers come pre-packaged (e.g. GitHub, Amazon, Twitter)</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Customizable (e.g. you can add custom providers, customize the &quot;adapter&quot;)</p>
+</li>
+<li><p class="first">Supports multiple providers in the same Django application</p>
+</li>
+<li><p class="first">Supports multiple options for account verification (e.g. email)</p>
+</li>
+</ul>
+<table class="docutils footnote" frame="void" id="id11" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id8">[4]</a></td><td><a class="reference external" href="https://github.com/pennersr/django-allauth&gt;"><code class="docutils literal"><span class="pre">django-allauth</span></code> on GitHub</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id12" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id9">[5]</a></td><td>We really love Django! Check out <a class="reference external" href="https://www.djangoproject.com/start/overview/">Why Django?</a> for some reasons why.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id13" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id10">[6]</a></td><td><a class="reference external" href="https://django-allauth.readthedocs.io">Welcome to django-allauth: Rationale</a></td></tr>
+</tbody>
+</table>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-2" id="django-allauth-2fa">
+    <hgroup>
+      <h2><code class="docutils literal"><span class="pre">django-allauth-2fa</span></code> <a class="footnote-reference" href="#id17" id="id15">[7]</a></h2>
+    </hgroup>
+    <article class="">
+      <p>A reusable package that adds two-factor authentication to <code class="docutils literal"><span class="pre">django-allauth</span></code>. It
+provides the glue between <code class="docutils literal"><span class="pre">django-otp</span></code> <a class="footnote-reference" href="#id18" id="id16">[8]</a> and <code class="docutils literal"><span class="pre">django-allauth</span></code>.</p>
+<ul class="simple">
+<li>Views and middleware to modify the login workflow.</li>
+<li>Views for enabling/disabling two-factor authentication.</li>
+<li>Support for &quot;backup&quot; codes.</li>
+<li>Works with Django 1.8, 1.9, 1.10, and <code class="docutils literal"><span class="pre">master</span></code>.</li>
+</ul>
+<table class="docutils footnote" frame="void" id="id17" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id15">[7]</a></td><td><a class="reference external" href="https://github.com/percipient/django-allauth-2fa"><code class="docutils literal"><span class="pre">django-allauth-2fa</span></code> on GitHub</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id18" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id16">[8]</a></td><td><a class="reference external" href="https://bitbucket.org/psagers/django-otp/"><code class="docutils literal"><span class="pre">django-otp</span></code> on BitBucket</a></td></tr>
+</tbody>
+</table>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-2" id="example-workflow-1-2-user-login">
+    <hgroup>
+      <h2>Example Workflow (1/2): User login</h2>
+    </hgroup>
+    <article class="">
+      <p>A user enters their username &amp; password, like normal.</p>
+<img alt="_images/login-1.png" class="align-center" src="_images/login-1.png" />
+
+
+
+
+    </article>
+  </slide>  <slide class="level-2" id="example-workflow-2-2-user-login">
+    <hgroup>
+      <h2>Example Workflow (2/2): User login</h2>
+    </hgroup>
+    <article class="">
+      <ul class="simple">
+<li>The user is prompted for their two-factor token.</li>
+<li>If successful, they are logged in as normal!</li>
+</ul>
+<img alt="_images/login-2.png" class="align-center" src="_images/login-2.png" />
+
+
+
+
+    </article>
+  </slide>  <slide class="level-2" id="example-workflow-1-3-configuring-two-factor">
+    <hgroup>
+      <h2>Example Workflow (1/3): Configuring Two-Factor</h2>
+    </hgroup>
+    <article class="">
+      <ul class="simple">
+<li>Users are presented with a QR code for enabling two-factor authentication.</li>
+<li>This supports devices which can take a picture of the QR code (e.g. Google
+Authenticator, Microsoft Authenticator).</li>
+</ul>
+<a class="reference internal image-reference" href="_images/setup-1.png"><img alt="_images/setup-1.png" class="align-left" src="_images/setup-1.png" style="width: 745.45px; height: 388.45px;" /></a>
+<a class="reference internal image-reference" href="_images/microsoft-authenticator-setup.png"><img alt="_images/microsoft-authenticator-setup.png" class="align-right" src="_images/microsoft-authenticator-setup.png" style="width: 144.0px; height: 256.0px;" /></a>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-2" id="example-workflow-2-3-configuring-two-factor">
+    <hgroup>
+      <h2>Example Workflow (2/3): Configuring Two-Factor</h2>
+    </hgroup>
+    <article class="">
+      <p>Once a user has two-factor enabled, they can:</p>
+<ul class="simple">
+<li>Disable it</li>
+<li>Create backup codes</li>
+</ul>
+<img alt="_images/setup-2.png" class="align-center" src="_images/setup-2.png" />
+
+
+
+
+    </article>
+  </slide>  <slide class="level-2" id="example-workflow-3-3-configuring-two-factor">
+    <hgroup>
+      <h2>Example Workflow (3/3): Configuring Two-Factor</h2>
+    </hgroup>
+    <article class="">
+      <ul class="simple">
+<li>Backup codes are displayed if they've been generated.</li>
+<li>Each backup code can only be used once.</li>
+</ul>
+<img alt="_images/setup-3.png" class="align-center" src="_images/setup-3.png" />
+
+
+
+
+    </article>
+  </slide>  <slide class="level-2" id="how-do-i-set-it-up-1-6">
+    <hgroup>
+      <h2>How do I set it up? (1/6)</h2>
+    </hgroup>
+    <article class="">
+      <p>Install the package via pip <a class="footnote-reference" href="#id21" id="id20">[9]</a>.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>pip install django-allauth-2fa
+</pre></div>
+</div>
+<table class="docutils footnote" frame="void" id="id21" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id20">[9]</a></td><td>Ideally you're using a <a class="reference external" href="https://virtualenv.pypa.io/en/stable/"><code class="docutils literal"><span class="pre">virtualenv</span></code></a>! But <code class="docutils literal"><span class="pre">virtualenv</span></code> could be an
+entire separate lightning talk.</td></tr>
+</tbody>
+</table>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-2" id="how-do-i-set-it-up-2-6">
+    <hgroup>
+      <h2>How do I set it up? (2/6)</h2>
+    </hgroup>
+    <article class="">
+      <ul class="simple">
+<li>Add <code class="docutils literal"><span class="pre">django-allauth-2fa</span></code> to the list of installed apps in <code class="docutils literal"><span class="pre">settings.py</span></code>.</li>
+<li>(Also add <code class="docutils literal"><span class="pre">django-allauth</span></code>, <code class="docutils literal"><span class="pre">django-otp</span></code>, and their dependencies.)</li>
+</ul>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;django.contrib.sites&#39;</span><span class="p">,</span>  <span class="c1"># Required by allauth.</span>
+    <span class="s1">&#39;django.contrib.auth&#39;</span><span class="p">,</span>  <span class="c1"># Configure Django auth package.</span>
+    <span class="s1">&#39;django.contrib.contenttypes&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.sessions&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;allauth&#39;</span><span class="p">,</span>  <span class="c1"># Enable allauth.</span>
+    <span class="s1">&#39;allauth.account&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django_otp&#39;</span><span class="p">,</span>  <span class="c1"># Configure the django-otp package.</span>
+    <span class="s1">&#39;django_otp.plugins.otp_totp&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django_otp.plugins.otp_static&#39;</span><span class="p">,</span>
+<span class="hll">    <span class="s1">&#39;allauth_2fa&#39;</span><span class="p">,</span>  <span class="c1"># Enable two-factor auth.</span>
+</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-2" id="how-do-i-set-it-up-3-6">
+    <hgroup>
+      <h2>How do I set it up? (3/6)</h2>
+    </hgroup>
+    <article class="">
+      <p>Enable the <code class="docutils literal"><span class="pre">django-allauth-2fa</span></code> middleware in <code class="docutils literal"><span class="pre">settings.py</span></code>. <a class="footnote-reference" href="#id23" id="id22">[10]</a></p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">MIDDLEWARE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="c1"># Configure Django auth package.</span>
+    <span class="s1">&#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;</span><span class="p">,</span>
+
+    <span class="c1"># Configure the django-otp package. Note this must be after the</span>
+    <span class="c1"># AuthenticationMiddleware.</span>
+    <span class="s1">&#39;django_otp.middleware.OTPMiddleware&#39;</span><span class="p">,</span>
+
+<span class="hll">    <span class="c1"># Reset login flow middleware. If this middleware is included, the login</span>
+</span><span class="hll">    <span class="c1"># flow is reset if another page is loaded between login and successfully</span>
+</span><span class="hll">    <span class="c1"># entering two-factor credentials.</span>
+</span><span class="hll">    <span class="s1">&#39;allauth_2fa.middleware.AllauthTwoFactorMiddleware&#39;</span><span class="p">,</span>
+</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<table class="docutils footnote" frame="void" id="id23" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id22">[10]</a></td><td><code class="docutils literal"><span class="pre">django-allauth-2fa</span></code> also supports the <code class="docutils literal"><span class="pre">MIDDLEWARE</span></code> setting from
+Django&gt;=1.10 as of <a class="reference external" href="https://github.com/percipient/django-allauth-2fa/pull/33">two days ago</a>.</td></tr>
+</tbody>
+</table>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-2" id="how-do-i-set-it-up-4-6">
+    <hgroup>
+      <h2>How do I set it up? (4/6)</h2>
+    </hgroup>
+    <article class="">
+      <p>Configure <code class="docutils literal"><span class="pre">django-allauth</span></code> to use the <code class="docutils literal"><span class="pre">django-allauth-2fa</span></code> adapter in
+<code class="docutils literal"><span class="pre">settings.py</span></code>. (This enables the two-factor authentication login workflow.)</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="hll"><span class="c1"># Set the allauth adapter to be the 2FA adapter.</span>
+</span><span class="hll"><span class="n">ACCOUNT_ADAPTER</span> <span class="o">=</span> <span class="s1">&#39;allauth_2fa.adapter.OTPAdapter&#39;</span>
+</span>
+<span class="c1"># Configure your default site. See</span>
+<span class="c1"># https://docs.djangoproject.com/en/dev/ref/settings/#sites.</span>
+<span class="n">SITE_ID</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</td></tr></table></div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-2" id="how-do-i-set-it-up-5-6">
+    <hgroup>
+      <h2>How do I set it up? (5/6)</h2>
+    </hgroup>
+    <article class="">
+      <p>Include the <code class="docutils literal"><span class="pre">django-allauth-2fa</span></code> URLs/views.</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">include</span><span class="p">,</span> <span class="n">url</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># Include the allauth and 2FA urls from their respective packages.</span>
+<span class="hll">    <span class="n">url</span><span class="p">(</span><span class="s1">r&#39;^accounts/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s1">&#39;allauth_2fa.urls&#39;</span><span class="p">)),</span>
+</span>    <span class="n">url</span><span class="p">(</span><span class="s1">r&#39;^accounts/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s1">&#39;allauth.urls&#39;</span><span class="p">)),</span>
+<span class="p">]</span>
+</pre></div>
+</td></tr></table></div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-2" id="how-do-i-set-it-up-6-6">
+    <hgroup>
+      <h2>How do I set it up? (6/6)</h2>
+    </hgroup>
+    <article class="">
+      <ul class="simple">
+<li>You'll need to migrate your models before using <code class="docutils literal"><span class="pre">django-allauth-2fa</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">django-allauth-2fa</span></code> doesn't include models or migrations, but
+<code class="docutils literal"><span class="pre">django-allauth</span></code> and <code class="docutils literal"><span class="pre">django-otp</span></code> do.</li>
+</ul>
+<div class="highlight-bash"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>python manage.py migrate
+</pre></div>
+</td></tr></table></div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-2" id="collaborators-wanted">
+    <hgroup>
+      <h2>Collaborators Wanted</h2>
+    </hgroup>
+    <article class="">
+      <ul class="simple">
+<li>More testing needed (different configurations, interaction with social accounts)</li>
+<li>Support for more device types (e.g. HOTP, YubiKey, Twilio)</li>
+<li>Support for multiple devices per user</li>
+<li>Improving the documentation (e.g. add a quickstart document)</li>
+<li>Setting up and adding translations</li>
+<li>Any other feedback you might have!</li>
+</ul>
+<p><a class="reference external" href="https://github.com/percipient/django-allauth-2fa/">https://github.com/percipient/django-allauth-2fa/</a></p>
+<p><a class="reference external" href="https://pypi.python.org/pypi/django-allauth-2fa/">https://pypi.python.org/pypi/django-allauth-2fa/</a></p>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-2" id="thank-you">
+    <hgroup>
+      <h2>Thank You!</h2>
+    </hgroup>
+    <article class="">
+      <p>Please reach out if you have any questions!</p>
+<p>Patrick Cloke</p>
+<p><a class="reference external" href="mailto:patrick&#37;&#52;&#48;strongarm&#46;io">patrick<span>&#64;</span>strongarm<span>&#46;</span>io</a></p>
+<p>Additionally, we're hiring!</p>
+<p><a class="reference external" href="https://strongarm.io/careers/">https://strongarm.io/careers/</a></p>
+<p>Slides available at <a class="reference external" href="https://github.com/percipient/talks/">https://github.com/percipient/talks/</a></p>
+<img alt="_images/strongarm_logo.png" class="align-center" src="_images/strongarm_logo.png" />
+
+
+
+
+    </article>
+  </slide>
+
+
+    <slide class="thank-you-slide segue nobackground">
+    <article class="flexbox vleft auto-fadein">
+      <h2>&lt;Thank You!&gt;</h2>
+    </article>
+    <p class="auto-fadein" data-config-contact>
+      <!-- populated from slide_config.json -->
+    </p>
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
