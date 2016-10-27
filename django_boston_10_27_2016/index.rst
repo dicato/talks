@@ -1,9 +1,9 @@
-Adding Two-Factor Authentication to Django
-##########################################
+Adding Two-Factor Authentication to Django (with ``django-allauth``)
+####################################################################
 
 Django Boston
 
-October 21, 2016
+October 27, 2016
 
 Patrick Cloke
 
@@ -16,42 +16,27 @@ Who am I?
 
 Patrick Cloke
 
-* Lead Software Engineer @ Percipient Networks working on `Strongarm <https://strongarm.io>`_
-* `Mozillian <https://mozillians.org/u/clokep/>`_
-* `github.com/clokep <https://github.com/clokep>`_
+* Lead Software Engineer @ Percipient Networks working on Strongarm (https://strongarm.io)
+* `Mozillian <https://mozillians.org/u/clokep/>`_ (Instantbird & Mozilla Thunderbird instant messaging)
+* `github.com/clokep <https://github.com/clokep>`_ / `bitbucket.com/clokep <https://bitbucket.org/clokep/>`_
 * `@clokep on Twitter <https://twitter.com/clokep>`_
-* `patrick@cloke.us <mailto:patrick@cloke.us>`_
+* http://patrick.cloke.us
 
-django-allauth-2fa
-==================
-
-* Why django-allauth-2fa?
-* What is two-factor authentication?
-* What is django-allauth-2fa?
-* Configuring django-allauth-2fa
-* How you can help
-
-django + allauth + two-factor authentication
-============================================
-
-* Why django-allauth-2fa?
-* What is two-factor authentication?
-* What is django-allauth-2fa?
-* Configuring django-allauth-2fa
-* How you can help
+.. image:: strongarm_logo.png
+    :align: center
 
 Two-factor (multi-factor) authentication [#]_ [#]_
 ==================================================
-
-.. figure:: SecureID_token_new.JPG
-    :class: align-right
-    :scale: 40%
 
 Two-factor / mutli-factor / 2FA:
     Requiring a login to have multiple pieces of evidence that a user owns an
     account.
 
-Pieces of evidence are considered two of:
+.. figure:: SecureID_token_new.JPG
+    :align: right
+    :scale: 30%
+
+Requires two pieces of evidence:
 
 1. Knowledge (something the user knows): e.g. a password, passphrase, PIN.
 2. Possession (something the user has): e.g. RSA SecureID, mobile devices / soft
@@ -62,22 +47,25 @@ Pieces of evidence are considered two of:
 .. [#] `Multi-factor authentication <https://en.wikipedia.org/wiki/Multi-factor_authentication>`_ on Wikipedia
 .. [#] `SecureID token new.JPG <https://commons.wikimedia.org/wiki/File:SecureID_token_new.JPG>`_ on Wikimedia Commons, released into Public Domain
 
-Two-factor (multi-factor) authentication (2) [#]_
-=================================================
+Two-factor (multi-factor) authentication
+========================================
 
-Generally the second factor is now a user's phone via one of two mechanisms:
+Generally the second factor is a user's phone via one of two mechanisms:
 
-* TOTP (Time-based One-Time Password Algorithm), e.g. Google Authenticator,
-  Microsoft Authenticator, Facebook Code Generator, etc. See :rfc:`6238` for the
-  exact specification.
+.. image:: microsoft-authenticator.png
+    :align: right
+    :scale: 12%
+
+* TOTP (Time-based One-Time Password Algorithm)  [#]_, e.g. Google Authenticator,
+  Microsoft Authenticator, Facebook Code Generator, etc. (See :rfc:`6238`.)
 * SMS / Text message
 
 .. warning::
 
-    * Showing SMS messages on the lock screen of mobile phones allows easy
-      bypassing of two-factor authentication.
-    * Receiving emails (i.e. password reset emails) on your mobile phone
-      essentially recombines the two-factors back to a single factor.
+    * Showing SMS messages on mobile phone lock screens allows easy bypassing of
+      two-factor authentication.
+    * Receiving emails (i.e. password reset emails) on a mobile phone recombines
+      the two-factors back to a single factor.
 
 .. [#] `Time-based One-time Password Algorithm <https://en.wikipedia.org/wiki/Time-based_One-time_Password_Algorithm>`_ on Wikipedia
 
@@ -86,6 +74,10 @@ Why Django?
 
 I assume you know what Django is...but just a few reasons we love it:
 
+.. image:: django-logo-negative.png
+    :align: right
+    :scale: 25%
+
 * "Batteries included"
 * Django is extremely flexible!
 * Tons of great reusable packages from the Django community!
@@ -93,22 +85,29 @@ I assume you know what Django is...but just a few reasons we love it:
 
 .. [#] `Why Django? <https://www.djangoproject.com/start/overview/>`_
 
-django-allauth
-==============
+``django-allauth`` [#]_
+=======================
 
 Package to work with authentication, registration, account management, and
 social authentication. [#]_
 
 * Supports both local (i.e. ``django.contrib.auth``) and "social" accounts (e.g.
   OpenID, OAuth, OAuth2 providers)
+
+    * Many social providers come pre-packaged (e.g. GitHub, Amazon, Twitter)
+
 * Pluggable (you can add custom providers)
-* Supports authentication by multiple forms
+* Supports multiple providers in the same Django application
 * Supports multiple options for account verification
 
+.. [#] |django-allauth|_
 .. [#] `Welcome to django-allauth: Rationale <https://django-allauth.readthedocs.io>`_
 
-django-allauth-2fa [#]_
-=======================
+.. |django-allauth| replace:: ``django-allauth`` on GitHub
+.. _django-allauth: https://github.com/pennersr/django-allauth>
+
+``django-allauth-2fa`` [#]_
+===========================
 
 A reusable package that adds two-factor authentication to ``django-allauth``. It
 provides the glue between ``django-otp`` [#]_ and ``django-allauth``.
@@ -118,8 +117,18 @@ provides the glue between ``django-otp`` [#]_ and ``django-allauth``.
 * Support for "backup" codes.
 * Works with Django 1.8, 1.9, 1.10, and ``master``.
 
-.. [#] `django-allauth-2fa <https://github.com/percipient/django-allauth-2fa>`_
-.. [#] `django-otp <https://bitbucket.org/psagers/django-otp/>`_
+.. [#] |django-allauth-2fa|_
+.. [#] |django-otp|_
+
+.. |django-allauth-2fa| replace:: ``django-allauth-2fa`` on GitHub
+.. _django-allauth-2fa: https://github.com/percipient/django-allauth-2fa
+.. |django-otp| replace:: ``django-otp`` on BitBucket
+.. _django-otp: https://bitbucket.org/psagers/django-otp/
+
+.. ..
+
+    Most of the magic is done via django-allauth and django-otp, we're just
+    lining up the interfaces. (And making it easy to configure.)
 
 Example Workflow (1/2): User login
 ==================================
@@ -132,8 +141,8 @@ A user enters their username & password, like normal.
 Example Workflow (2/2): User login
 ==================================
 
-The user is prompted for their two-factor token. If successful, they are logged
-in as normal!
+* The user is prompted for their two-factor token.
+* If successful, they are logged in as normal!
 
 .. image:: login-2.png
     :align: center
@@ -141,17 +150,29 @@ in as normal!
 Example Workflow (1/3): Configuring Two-Factor
 ==============================================
 
-Users are presented with a QR code for enabling two-factor authentication.
-This supports TOTP devices which can take a picture of the QR code (e.g. Google
-Authenticator, Microsoft Authenticator).
+* Users are presented with a QR code for enabling two-factor authentication.
+* This supports devices which can take a picture of the QR code (e.g. Google
+  Authenticator, Microsoft Authenticator).
+
+.. ..
+
+    This can be set to 85% if on widescreen.
 
 .. image:: setup-1.png
-    :align: center
+    :align: left
+    :scale: 65%
+
+.. image:: microsoft-authenticator-setup.png
+    :align: right
+    :scale: 10%
 
 Example Workflow (2/3): Configuring Two-Factor
 ==============================================
 
-Once a user has two-factor enabled, they can disable it or create backup codes.
+Once a user has two-factor enabled, they can:
+
+* Disable it
+* Create backup codes
 
 .. image:: setup-2.png
     :align: center
@@ -159,8 +180,8 @@ Once a user has two-factor enabled, they can disable it or create backup codes.
 Example Workflow (3/3): Configuring Two-Factor
 ==============================================
 
-If a user has created backup codes, they're disabled to the user. Note that each
-backup code can only be used once.
+* Backup codes are displayed if they've been generated.
+* Backup codes can be used only once.
 
 .. image:: setup-3.png
     :align: center
@@ -174,7 +195,7 @@ Install the package via pip [#]_.
 
     pip install django-allauth-2fa
 
-.. [#] Ideally you're using a |virtualenv|_! But that could be an entire other
+.. [#] Ideally you're using a |virtualenv|_! That could be an entire separate
        lightning talk.
 
 .. |virtualenv| replace:: ``virtualenv``
@@ -233,7 +254,7 @@ How do I set it up? (4/6)
 =========================
 
 Configure ``django-allauth`` to use the ``django-allauth-2fa`` adapter in
-``settings.py``. This enables the two-factor authentication login workflow.
+``settings.py``. (This enables the two-factor authentication login workflow.)
 
 .. code-block:: python
     :linenos:
@@ -287,7 +308,12 @@ Collaborators Wanted
 * Any other feedback you might have!
 
 https://github.com/percipient/django-allauth-2fa/
+
 https://pypi.python.org/pypi/django-allauth-2fa/
+
+.. ..
+
+    No prior experience needed!
 
 Thank You!
 ==========
@@ -301,3 +327,8 @@ Patrick Cloke
 Additionally, we're hiring!
 
 https://strongarm.io/careers/
+
+Slides available at https://github.com/percipient/talks/
+
+.. image:: strongarm_logo.png
+    :align: center
