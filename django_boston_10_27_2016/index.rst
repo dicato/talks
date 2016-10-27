@@ -69,26 +69,14 @@ Generally the second factor is a user's phone via one of two mechanisms:
 
 .. [#] `Time-based One-time Password Algorithm <https://en.wikipedia.org/wiki/Time-based_One-time_Password_Algorithm>`_ on Wikipedia
 
-Why Django?
-===========
-
-I assume you know what Django is...but just a few reasons we love it:
+``django-allauth`` [#]_
+=======================
 
 .. image:: django-logo-negative.png
     :align: right
     :scale: 25%
 
-* "Batteries included"
-* Django is extremely flexible!
-* Tons of great reusable packages from the Django community!
-* ...lots of other reasons... [#]_
-
-.. [#] `Why Django? <https://www.djangoproject.com/start/overview/>`_
-
-``django-allauth`` [#]_
-=======================
-
-Package to work with authentication, registration, account management, and
+A reusable Django [#]_ package to work with authentication, registration, account management, and
 social authentication. [#]_
 
 * Supports both local (i.e. ``django.contrib.auth``) and "social" accounts (e.g.
@@ -96,11 +84,12 @@ social authentication. [#]_
 
     * Many social providers come pre-packaged (e.g. GitHub, Amazon, Twitter)
 
-* Pluggable (you can add custom providers)
+* Customizable (e.g. you can add custom providers, customize the "adapter")
 * Supports multiple providers in the same Django application
-* Supports multiple options for account verification
+* Supports multiple options for account verification (e.g. email)
 
 .. [#] |django-allauth|_
+.. [#] We really love Django! Check out `Why Django? <https://www.djangoproject.com/start/overview/>`_ for some reasons why.
 .. [#] `Welcome to django-allauth: Rationale <https://django-allauth.readthedocs.io>`_
 
 .. |django-allauth| replace:: ``django-allauth`` on GitHub
@@ -156,11 +145,11 @@ Example Workflow (1/3): Configuring Two-Factor
 
 .. ..
 
-    This can be set to 85% if on widescreen.
+    Set this to 65% if not widescreen.
 
 .. image:: setup-1.png
     :align: left
-    :scale: 65%
+    :scale: 85%
 
 .. image:: microsoft-authenticator-setup.png
     :align: right
@@ -181,7 +170,7 @@ Example Workflow (3/3): Configuring Two-Factor
 ==============================================
 
 * Backup codes are displayed if they've been generated.
-* Backup codes can be used only once.
+* Each backup code can only be used once.
 
 .. image:: setup-3.png
     :align: center
@@ -195,8 +184,8 @@ Install the package via pip [#]_.
 
     pip install django-allauth-2fa
 
-.. [#] Ideally you're using a |virtualenv|_! That could be an entire separate
-       lightning talk.
+.. [#] Ideally you're using a |virtualenv|_! But ``virtualenv`` could be an
+       entire separate lightning talk.
 
 .. |virtualenv| replace:: ``virtualenv``
 .. _virtualenv: https://virtualenv.pypa.io/en/stable/
@@ -270,8 +259,7 @@ Configure ``django-allauth`` to use the ``django-allauth-2fa`` adapter in
 How do I set it up? (5/6)
 =========================
 
-* Add the ``django-allauth-2fa`` URLS to a ``urls.py`` file.
-* Suggest doing it next to the allauth URLs.
+Include the ``django-allauth-2fa`` URLs/views.
 
 .. code-block:: python
     :linenos:
@@ -281,8 +269,8 @@ How do I set it up? (5/6)
 
     urlpatterns = [
         # Include the allauth and 2FA urls from their respective packages.
-        url(r'^', include('allauth_2fa.urls')),
-        url(r'^', include('allauth.urls')),
+        url(r'^accounts/', include('allauth_2fa.urls')),
+        url(r'^accounts/', include('allauth.urls')),
     ]
 
 How do I set it up? (6/6)
@@ -313,7 +301,8 @@ https://pypi.python.org/pypi/django-allauth-2fa/
 
 .. ..
 
-    No prior experience needed!
+    * No prior experience needed!
+    * Some issues are already filed!
 
 Thank You!
 ==========
@@ -322,7 +311,7 @@ Please reach out if you have any questions!
 
 Patrick Cloke
 
-`patrick@strongarm.io <patrick@strongarm.io>`_
+`patrick@strongarm.io <mailto:patrick@strongarm.io>`_
 
 Additionally, we're hiring!
 
