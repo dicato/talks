@@ -32,18 +32,18 @@ theme: Business Class, 1
 
 # What does zero downtime mean?
 
-- End-users can continue using the website without noticing anything
-- All services remain functioning
-- No downtime!
+- End-users can continue using the website without noticing anything while you deploy.
+- All services remain functioning.
+- No downtime when you make changes!
 
 ---
 
 # Zero downtime deployments
 
-- Without zero downtime deployments, zero downtime migrations are useless
-- Many different methods to keep your Django app running while deploying changes:
-  - Rolling deploy: Deploy to one web server at a time
-  - Blue/green deploy: Stand up a duplicate set of web servers, swap them out after the deploy has finished
+- Without zero downtime deployments, zero downtime migrations are useless.
+- Deploying without downtime requires multiple Django servers (load balanced).
+- Rolling deploy: Deploy to one web server at a time
+- Blue/green deploy: Stand up a duplicate set of web servers, swap them out after the deploy has finished
 
 ---
 
@@ -98,16 +98,15 @@ SELECT * FROM customer;
 
 # Leveraging Django's querying method
 
-- Django only queries for fields that it knows about
-- Fields can exist in the database without being defined in Django
-- Django will raise an exception if a field is defined, but isn't in the database
+- Django only queries for fields that it knows about.
+- Fields can exist in the database without being defined in Django.
+- Django will raise an exception if a field is defined, but isn't in the database.
 
 ---
 
 # Migration Strategies
 
 - Adding a field
-- Adding a required field
 - Removing a field
 
 ---
@@ -136,68 +135,6 @@ This ensures that the field exists in the database *before* Django starts using 
 
 ---
 
-# Adding a required field
-
-- Adding a required field without a default is tricky because you have to backfill data.
-- Django migrations support custom functions to backfill data that are run when the migration is applied.
-
-```python
-class Customer(models.Model):
-    company_name = models.CharField(max_length=32)
-    plan = models.CharField(max_length=32)  # paid, free, etc.
-    company_address = models.CharField(blank=True, max_length=100)
-    employee_count = models.IntegerField()  # This is required!
-```
-
----
-
-# Adding a required field (w/ RunPython)
-
-1. Create your migration for the new field. Use a `RunPython` function in the migration file for backfilling data.
-3. Migrate the database so that the new field exists and each row has the backfilled data.
-4. Deploy your code to Django.
-
----
-
-# Adding a required field (w/ RunPython)
-
-- Using `RunPython` in migrations can be fragile, especially for large or complex data sets.
-- If an exception is raised, Django will leave you in a weird state where it thinks the migration is complete when it really isn't.
-
----
-
-# Adding a required field (w/ Mgmt Command)
-
-- Management commands can be used as standalone scripts that interact with your database.
-- Data migrations are a great use case for management commands.
-- Design your command so that it migrates data in batches and can be run repeatedly.
-
----
-
-# Adding a required field (w/ Mgmt Command)
-
-- Use the `null=True` attribute to initially allow the field to be empty.
-
-```python
-class Customer(models.Model):
-    company_name = models.CharField(max_length=32)
-    plan = models.CharField(max_length=32)  # paid, free, etc.
-    company_address = models.CharField(blank=True, max_length=100)
-    employee_count = models.IntegerField(null=True)
-```
-
----
-
-# Adding a required field (w/ Mgmt Command)
-
-1. Create a management command to backfill the data.
-2. Migrate the database so the new field gets created (each row is `None`).
-3. Deploy your code to Django and run the management command to backfill the data.
-5. Remove the `null=True` attribute from the field and migrate the database again.
-6. Deploy your code to Django.
-
----
-
 # Removing a field
 
 - Remove the plan field because we decided we don't need it
@@ -207,7 +144,6 @@ class Customer(models.Model):
     company_name = models.CharField(max_length=32)
     # Removed plan field
     company_address = models.CharField(blank=True, max_length=100)
-    employee_count = models.IntegerField(default=1)
 ```
 
 ---
@@ -225,7 +161,15 @@ This ensures that Django stops using the field *before* it is deleted from the d
 
 # Complex migration strategies
 
-- More complex migrations can be designed by building on these basic steps
+- `RunPython` can be used in Django migrations for migrating data (backfilling).
+- Exceptions in `RunPython` functions can leave your migration in a weird state.
+- Management commands often work better for data migrations because they are easier to test and can be run repeatedly.
+
+---
+
+# Complex migration strategies
+
+- More complex migrations can be designed by building on these basic steps.
 - *Remember*: Understanding how Django queries for data will help you determine the order for migrating and deploying.
 - Testing complex migrations:
 [`github.com/plumdog/django_migration_testcase`](https://github.com/plumdog/django_migration_testcase)
