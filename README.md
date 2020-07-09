@@ -1,6 +1,6 @@
 # talks
 
-Talks and presentations given by members of the Percipient team.
+Talks and presentations.
 
 ## Boston Python - August 27, 2015
 
