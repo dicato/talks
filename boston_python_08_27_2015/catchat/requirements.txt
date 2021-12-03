@@ -6,3 +6,4 @@ requests
 # For Twisted web client.
 pyOpenSSL
 service_identity
+pygments>=2.7.4 # not directly required, pinned by Snyk to avoid a vulnerability
